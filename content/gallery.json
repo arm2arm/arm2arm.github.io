@@ -1,0 +1,11 @@
+{
+ "figures": [
+  {
+   "src": "img/cmd_shboost2024.jpg",
+   "w": 300,
+   "h": 300,
+   "alt": "Color-magnitude diagram of 217 million SHBoost-labeled Gaia DR3 XP stars",
+   "caption": "Color–magnitude diagram of the 217M-star SHBoost sample (Gaia DR3 XP) — spectroscopic labels transferred by machine learning in four hours on a single GPU. From the AIP press release <a href=\"https://www.aip.de/en/news/milky-way-gaia-machine-learning/\" target=\"_blank\" rel=\"noopener\">“A sharper view of the Milky Way”</a>."
+  }
+ ]
+}

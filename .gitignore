@@ -1,0 +1,4 @@
+# local tooling — not part of the deployed site
+parity.py
+/tmp/
+*.bak

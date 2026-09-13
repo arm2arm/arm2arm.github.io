@@ -1,0 +1,24 @@
+{
+  "name": "Dr. Arman Khalatyan",
+  "brand": "A. Khalatyan",
+  "kicker": "Researcher · Astrophysics &amp; Scientific Computing",
+  "org": "Leibniz Institute for Astrophysics Potsdam (AIP)",
+  "tagline": "Building the data infrastructure for precision astrophysics — from 400&nbsp;million-star catalogues to the HPC, ML and AI systems that fit, benchmark and ship them.",
+  "footer": "© 2026 Dr. Arman Khalatyan · Leibniz Institute for Astrophysics Potsdam",
+  "nav": [
+    ["Home", "index.html"],
+    ["Publications", "publications.html"],
+    ["Projects", "projects.html"],
+    ["Benchmarks", "benchmarks.html"],
+    ["Gallery", "gallery.html"],
+    ["Software", "software.html"],
+    ["Contact", "index.html#contact"]
+  ],
+  "contact": [
+    {"label": "Email", "mail": "ed.pia|naytalahka"},
+    {"label": "GitHub", "url": "https://github.com/arm2arm", "val": "github.com/arm2arm"},
+    {"label": "ORCID", "url": "https://orcid.org/0000-0002-8913-0690", "val": "0000-0002-8913-0690"},
+    {"label": "LinkedIn", "url": "https://www.linkedin.com/in/arm2arm", "val": "linkedin.com/in/arm2arm"},
+    {"label": "Institute", "url": "https://www.aip.de/en/members/arman-khalatyan/", "val": "AIP — Leibniz-Institut für Astrophysik Potsdam"}
+  ]
+}

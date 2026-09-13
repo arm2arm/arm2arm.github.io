@@ -1,0 +1,75 @@
+<div style="padding: 0 8px">
+      <details class="detail">
+        <summary>
+          <span class="dmark">▸</span>
+          <span class="dtitle">DRP-Hub deep dive</span>
+          <span class="dsub">assistant · WCEDMVO 7-component model · L0–L4 maturity · FAIR crosswalk · live registry</span>
+        </summary>
+        <div class="dbody">
+
+          <h4>The DRP AI Assistant</h4>
+          <p>The hub ships an interactive <b>DRP Assistant</b> — a chat agent over the registry API that
+          helps researchers discover, describe, clone and mature Digital Research Products from natural
+          language. It streams responses (SSE), surfaces the tool calls it makes (each answer can be
+          traced back to the originating API call), keeps per-user chat history, and can be extended with
+          a configurable terminal proxy for repository and execution actions. Admins configure the model
+          endpoint and the assistant's behavior in settings; the p4n instance is pre-production (BETA) and
+          not a citable corpus.</p>
+
+          <h4>WCEDMVO — a computed maturity model</h4>
+          <p>Registry methodology that separates an <i>evolving</i> product from the <i>evidence</i> backing
+          its current assessment. A product keeps one identity while its component references are attached,
+          replaced or detached; maturity is then <i>computed</i> per record revision from explicit,
+          inspectable gates — a level plus the exact unmet criteria, not a black-box score.</p>
+          <ul class="roles">
+            <li><span class="rk">W · Workflow</span><span class="rv">manifest, step order, parameters, entry command</span></li>
+            <li><span class="rk">C · Code</span><span class="rv">repository with release or commit reference</span></li>
+            <li><span class="rk">E · Environment</span><span class="rv">dependency specification, container image reference</span></li>
+            <li><span class="rk">D · Data</span><span class="rv">input references, versions, checksums, access conditions</span></li>
+            <li><span class="rk">M · Metadata</span><span class="rv">description, creators, citation, license</span></li>
+            <li><span class="rk">V · Validation &amp; provenance</span><span class="rv">scoped checks, outcomes, recorded runs</span></li>
+            <li><span class="rk">O · Outputs</span><span class="rv">tables, figures, reference results, tolerances</span></li>
+          </ul>
+
+          <h4>The L0–L4 maturity ladder</h4>
+          <p>Gates are cumulative: failing L2 (e.g. removing the environment image) drops the product to
+          L1, and all higher gates fall with it. A level describes local policy conformance — it is a
+          navigation aid, not a certificate of scientific validity or full FAIR compliance.</p>
+          <div class="ladder">
+            <div class="lvl"><span class="lv">L0</span><span class="ln">Registered</span><span class="lc">A product record exists.</span></div>
+            <div class="lvl"><span class="lv">L1</span><span class="ln">Documented</span><span class="lc">Description ≥ 80 characters; at least one of <i>git_url</i>, <i>workflow_file</i> or <i>entry_command</i> present.</span></div>
+            <div class="lvl"><span class="lv">L2</span><span class="ln">Citable &amp; specified</span><span class="lc">License, citation-file URL and environment image present; a release tag or commit other than HEAD recorded.</span></div>
+            <div class="lvl"><span class="lv">L3</span><span class="ln">Execution-evidenced</span><span class="lc">Workflow or command, validation scope, a passed validation-run record, and provenance URL or last-run binding.</span></div>
+            <div class="lvl"><span class="lv">L4</span><span class="ln">Publication-oriented</span><span class="lc">DOI and archive URL present, public visibility, human review recorded.</span></div>
+          </div>
+
+          <h4>FAIR in DRP-Hub — and where it stops</h4>
+          <p>The ladder and the FAIR principles answer different questions: FAIR concerns properties of
+          data and metadata (persistent identity, semantic interoperability, stewardship); the ladder
+          orders selected local obligations. Each FAIR principle maps to a supporting mechanism —
+          DOI/archive (F1, L4), description + citation + license (F2, L1–L2), HTTPS API and artifact
+          links (A1/A1.1/A1.2), separate registry record for metadata retention (A2), structured metadata
+          with possible RO-Crate export (I1), component links (I3) and license + provenance + workflow
+          fields (R1.1–R1.3) — while the remaining evidence obligations stay explicit gaps. In short:
+          DRP-Hub makes FAIR <i>trackable</i> field by field; it does not by itself certify FAIR compliance.</p>
+
+          <h4>Live registry (p4n snapshot, 2026-09)</h4>
+          <div class="statline">
+            <div><div class="sv">72</div><div class="sk">products</div></div>
+            <div><div class="sv">L0</div><div class="sk">all products</div></div>
+            <div><div class="sv">43</div><div class="sk">REANA workflows</div></div>
+            <div><div class="sv">55 / 14 / 3</div><div class="sk">repo / clone / other</div></div>
+            <div><div class="sv">15 · 11</div><div class="sk">astro · HEP</div></div>
+            <div><div class="sv">2</div><div class="sk">with DOI</div></div>
+          </div>
+          <p>The registry is in pre-production: products are registered and REANA-attached, but almost none
+          have passed the L1 documentation gates yet — the gap the maturity ladder is designed to close,
+          one remediation at a time. The v1 API adds field projection, ETag concurrency, HATEOAS links,
+          SSE events, dry-run on mutations, and idempotency keys; JWT + service-token auth.</p>
+          <p class="rmeta" style="margin-top:18px">
+            <span>methodology: Khalatyan, Sacchi &amp; Enke — <i>From Bookmark to Publication</i> (WCEDMVO), 2026</span>
+            <span>API: drp-term.kube.aip.de/api/v1 · instance: <a href="https://drphub-p4n.aip.de" target="_blank" rel="noopener">drphub-p4n.aip.de</a> (BETA)</span>
+          </p>
+        </div>
+      </details>
+      </div>

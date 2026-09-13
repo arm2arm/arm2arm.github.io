@@ -333,14 +333,22 @@ img { max-width: 100%; height: auto; display: block; }
 }
 
 /* ============================================================
-   GALLERY
+   GALLERY — single figure centered; multiple flow as an auto grid
    ============================================================ */
 .gallery { margin-top: 32px; }
-.gallery figure { max-width: 560px; margin: 0 auto; }
-.gallery img { border: 1px solid var(--rule); }
+.gallery.single figure { max-width: 560px; margin: 0 auto; }
+.gallery img { border: 1px solid var(--rule); width: 100%; }
 .gallery figcaption {
   font-family: var(--mono); font-size: 12.5px; color: var(--muted);
   margin-top: 14px; line-height: 1.6;
+}
+@media (min-width: 760px) {
+  .gallery:not(.single) {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 28px;
+  }
+}
+@media (min-width: 900px) {
+  .gallery:not(.single) { grid-template-columns: repeat(3, 1fr); }
 }
 
 /* ============================================================
