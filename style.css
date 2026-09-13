@@ -129,6 +129,12 @@ body {
 .gallery figcaption {
   color: var(--muted); font-size: 13px; margin-top: 10px; line-height: 1.5;
 }
+.gallery.single {
+  display: flex; justify-content: center;
+}
+.gallery.single figure {
+  max-width: 420px; width: 100%;
+}
 
 /* open source / software */
 .os-list { display: flex; flex-direction: column; gap: 12px; margin-top: 26px; }
