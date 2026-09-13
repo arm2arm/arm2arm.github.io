@@ -4,9 +4,9 @@
      data-theme  = light | dark
      data-accent = ocean | paper
    → ocean-light, ocean-dark, paper-light, paper-dark (four distinct
-   palettes — not a mix). :root is ocean-light (the JS default, so no
-   flash on a light-system visitor). No gradients, no glow, no radius,
-   no shadow, no emoji. All colors var()-driven.
+   palettes — not a mix). :root = ocean-LIGHT (no-JS fallback only;
+   the static default on <html> is ocean-DARK). No gradients, no glow,
+   no radius, no shadow, no emoji. All colors var()-driven.
    ============================================================ */
 :root {
   /* OCEAN · LIGHT — cool paper, deep-blue accent */
@@ -30,8 +30,9 @@
   color-scheme: light;
 }
 
-[data-accent="paper"] {
-  /* PAPER · LIGHT — warm paper, oxblood accent */
+[data-accent="paper"][data-theme="light"] {
+  /* PAPER · LIGHT — warm paper, oxblood accent (scoped to light so a
+     missing/invalid data-theme can never override the dark block) */
   --paper:        #F6F4EE;
   --paper-2:      #EFECE3;
   --ink:          #1C1B18;
@@ -122,7 +123,7 @@ img { max-width: 100%; height: auto; display: block; }
 }
 .nav-burger {
   display: none;
-  width: 44px; height: 40px;
+  width: 44px; height: 44px;
   border: 1px solid var(--rule);
   background: transparent;
   cursor: pointer; position: relative;
@@ -137,10 +138,10 @@ img { max-width: 100%; height: auto; display: block; }
 .nav-burger span::before { left: 0; right: 0; top: -6px; }
 .nav-burger span::after  { left: 0; right: 0; top: 6px; }
 
-/* dark/light + palette toggles */
+/* dark/light + palette toggles (44px touch targets) */
 .theme-toggle, .accent-toggle {
   display: inline-flex; align-items: center; justify-content: center;
-  width: 40px; height: 40px; flex: none;
+  width: 44px; height: 44px; flex: none;
   border: 1px solid var(--rule); background: transparent;
   color: var(--body); cursor: pointer;
   transition: color .15s ease, border-color .15s ease;
@@ -279,7 +280,6 @@ img { max-width: 100%; height: auto; display: block; }
   color: var(--muted); margin-left: 10px; letter-spacing: 0.02em;
 }
 .row .rdesc { font-size: 15px; line-height: 1.6; color: var(--body); margin-top: 6px; }
-.row .rbody { margin-top: 14px; }
 .row .rmeta {
   font-family: var(--mono); font-size: 12.5px; color: var(--muted);
   display: flex; flex-wrap: wrap; gap: 4px 18px; margin-top: 14px;
@@ -325,7 +325,6 @@ img { max-width: 100%; height: auto; display: block; }
   align-self: start; padding-top: 2px;
 }
 .pubs .cite { font-size: 15.5px; line-height: 1.55; color: var(--body); overflow-wrap: anywhere; }
-.pubs .cite em { font-style: italic; color: var(--ink); font-weight: 500; }
 .pubs .doi {
   grid-column: 2; justify-self: start; align-self: start; padding-top: 4px;
   font-family: var(--mono); font-size: 11.5px; font-weight: 500;
@@ -533,8 +532,8 @@ img { max-width: 100%; height: auto; display: block; }
     position: absolute; top: var(--nav-h); left: 0; right: 0;
     flex-direction: column; align-items: stretch; gap: 0;
     background: var(--paper); border-bottom: 1px solid var(--rule);
-    max-height: 0; overflow: hidden;
-    transition: max-height .25s ease;
+    max-height: 0; overflow: hidden; visibility: hidden;
+    transition: max-height .25s ease, visibility .25s;
   }
   .nav-link {
     padding: 14px var(--pad); border-top: 1px solid var(--rule);
@@ -546,7 +545,7 @@ img { max-width: 100%; height: auto; display: block; }
     margin: 0; padding: 12px var(--pad);
     border-left: none; border-top: 1px solid var(--rule);
   }
-  .nav-toggle:checked ~ .nav-links { max-height: 640px; }
+  .nav-toggle:checked ~ .nav-links { max-height: 640px; visibility: visible; }
   .nav-toggle:focus-visible ~ .nav-burger { outline: 2px solid var(--accent); outline-offset: 2px; }
   .nav-toggle:checked ~ .nav-burger span { transform: translateY(-50%) rotate(45deg); }
   .nav-toggle:checked ~ .nav-burger span::before { top: 0; }

@@ -5,6 +5,10 @@
   "org": "Leibniz Institute for Astrophysics Potsdam (AIP)",
   "tagline": "Building the data infrastructure for precision astrophysics — from 400&nbsp;million-star catalogues to the HPC, ML and AI systems that fit, benchmark and ship them.",
   "footer": "© 2026 Dr. Arman Khalatyan · Leibniz Institute for Astrophysics Potsdam",
+  "stats": {
+    "citations": "895+ citations",
+    "hindex": "h-index 11"
+  },
   "nav": [
     ["Home", "index.html"],
     ["Publications", "publications.html"],

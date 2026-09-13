@@ -14,8 +14,8 @@
     if (t !== 'light' && t !== 'dark') { t = 'dark'; }
     var a = localStorage.getItem('accent');
     if (a !== 'ocean' && a !== 'paper') { a = 'ocean'; }
-    var chrome = { 'ocean-light':'#EFF3F6', 'ocean-dark':'#0B1626', 'paper-light':'#F6F4EE', 'paper-dark':'#1B1915' }[a + '-' + t];
-    var fav  = { 'ocean-light':'#1D6A96', 'ocean-dark':'#4FA3D1', 'paper-light':'#A02C1E', 'paper-dark':'#D4714B' }[a + '-' + t];
+    var chrome = {"ocean-light": "#EFF3F6", "ocean-dark": "#0B1626", "paper-light": "#F6F4EE", "paper-dark": "#1B1915"}[a + '-' + t];
+    var fav  = {"ocean-light": "#1D6A96", "ocean-dark": "#4FA3D1", "paper-light": "#A02C1E", "paper-dark": "#D4714B"}[a + '-' + t];
     var r = document.documentElement;
     r.setAttribute('data-theme', t);
     r.setAttribute('data-accent', a);
@@ -23,7 +23,7 @@
     if (m) { m.setAttribute('content', chrome); }
     var f = document.getElementById('favicon');
     if (f) {
-      f.setAttribute('href', "data:image/svg+xml," + encodeURIComponent(
+      f.setAttribute("href", "data:image/svg+xml," + encodeURIComponent(
         "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='13' font-size='13' fill='" + fav + "' font-family='Georgia'>A.</text></svg>"));
     }
     var b1 = document.getElementById('theme-toggle');
@@ -76,8 +76,8 @@
 <script>
 /* theme + accent toggles — persist per visitor */
 (function () {
-  var chrome = { 'ocean-light':'#EFF3F6', 'ocean-dark':'#0B1626', 'paper-light':'#F6F4EE', 'paper-dark':'#1B1915' };
-  var fav  = { 'ocean-light':'#1D6A96', 'ocean-dark':'#4FA3D1', 'paper-light':'#A02C1E', 'paper-dark':'#D4714B' };
+  var chrome = {"ocean-light": "#EFF3F6", "ocean-dark": "#0B1626", "paper-light": "#F6F4EE", "paper-dark": "#1B1915"};
+  var fav  = {"ocean-light": "#1D6A96", "ocean-dark": "#4FA3D1", "paper-light": "#A02C1E", "paper-dark": "#D4714B"};
   function apply() {
     var r = document.documentElement;
     var t = r.getAttribute('data-theme') || 'light';
@@ -86,7 +86,7 @@
     if (m) { m.setAttribute('content', chrome[a + '-' + t]); }
     var f = document.getElementById('favicon');
     if (f) {
-      f.setAttribute('href', "data:image/svg+xml," + encodeURIComponent(
+      f.setAttribute("href", "data:image/svg+xml," + encodeURIComponent(
         "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='13' font-size='13' fill='" + fav[a + '-' + t] + "' font-family='Georgia'>A.</text></svg>"));
     }
     var b1 = document.getElementById('theme-toggle');
@@ -198,9 +198,7 @@
   <div class="wrap">
     <span class="cr">© 2026 Dr. Arman Khalatyan · Leibniz Institute for Astrophysics Potsdam</span>
     <span class="fl">
-      <a href="https://github.com/arm2arm" target="_blank" rel="noopener">GitHub</a> ·
-      <a href="https://orcid.org/0000-0002-8913-0690" target="_blank" rel="noopener">ORCID</a> ·
-      <a href="https://www.linkedin.com/in/arm2arm" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/arm2arm" target="_blank" rel="noopener">GitHub</a> · <a href="https://orcid.org/0000-0002-8913-0690" target="_blank" rel="noopener">ORCID</a> · <a href="https://www.linkedin.com/in/arm2arm" target="_blank" rel="noopener">LinkedIn</a>
     </span>
   </div>
 </footer>

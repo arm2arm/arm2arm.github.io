@@ -28,21 +28,46 @@ CHECK_ONLY = '--check' in sys.argv
 
 # ---------------------------------------------------------------- data ----
 def load(name):
-    return json.load(open(os.path.join(CONTENT, name)))
+    path = os.path.join(CONTENT, name)
+    try:
+        with open(path) as f:
+            return json.load(f)
+    except FileNotFoundError:
+        sys.exit('build.py: missing %s — add it before building' % path)
+    except json.JSONDecodeError as e:
+        sys.exit('build.py: %s is not valid JSON: %s' % (path, e))
 
 SITE   = load('site.json')
 PUBS   = load('pubs.json')
 GALLERY= load('gallery.json')
 
 def frag(name):
-    return open(os.path.join(CONTENT, 'pages', name)).read().strip()
+    path = os.path.join(CONTENT, 'pages', name)
+    try:
+        with open(path) as f:
+            return f.read().strip()
+    except FileNotFoundError:
+        sys.exit('build.py: missing fragment %s' % path)
 
 HOME_OVERVIEW = frag('home_overview.html')
 HOME_RESEARCH = frag('home_research.html')
-DRP_DEEPDIVE  = frag('drp_deepdive.html')
+BENCH_SECTIONS = frag('bench_sections.html')
+
+# Single source of truth for the browser-chrome + favicon colors; emitted
+# as JSON into both inline scripts (a 5th palette = add one entry here +
+# one CSS block in style.css).
+THEME_COLORS = {
+    'chrome': {'ocean-light': '#EFF3F6', 'ocean-dark': '#0B1626',
+               'paper-light': '#F6F4EE', 'paper-dark': '#1B1915'},
+    'fav':    {'ocean-light': '#1D6A96', 'ocean-dark': '#4FA3D1',
+               'paper-light': '#A02C1E', 'paper-dark': '#D4714B'},
+}
 
 # Each project: title, lang badge, href, desc, meta (optional),
 # details (optional path -> content/pages/<name>, rendered after the row).
+# NOTE: title/lang/desc/meta may contain RAW HTML (b, em, span, a) — the
+# convention for this project list; free text from JSON files, by contrast,
+# is escaped by the builder.
 PROJECTS = [
     dict(num='01', title='PhysicsLLM', lang='LLM · agents · vLLM',
          href='https://github.com/arm2arm/llm4reana',
@@ -90,10 +115,13 @@ SW = [
 
 # ---------------------------------------------------------------- head ----
 def nav_html(active):
+    # `active` = lowercased NAV LABEL (e.g. 'projects'), 'home' for index
+    # (matched via the 'index.html' href), or None for no highlight (404).
     AC = ' aria-current="page"'
     out = []
     for label, href in SITE['nav']:
-        cur = (label.lower() == active)
+        cur = active is not None and (
+            label.lower() == active or os.path.basename(href.split('#')[0]).lower() == active)
         cls = 'nav-link active' if cur else 'nav-link'
         out.append('<a class="%s" href="%s"%s>%s</a>' % (cls, href, AC if cur else '', label))
     return '\n      '.join(out)
@@ -107,8 +135,8 @@ THEME_JS_PRE = '''<script>
     if (t !== 'light' && t !== 'dark') { t = 'dark'; }
     var a = localStorage.getItem('accent');
     if (a !== 'ocean' && a !== 'paper') { a = 'ocean'; }
-    var chrome = { 'ocean-light':'#EFF3F6', 'ocean-dark':'#0B1626', 'paper-light':'#F6F4EE', 'paper-dark':'#1B1915' }[a + '-' + t];
-    var fav  = { 'ocean-light':'#1D6A96', 'ocean-dark':'#4FA3D1', 'paper-light':'#A02C1E', 'paper-dark':'#D4714B' }[a + '-' + t];
+    var chrome = __CHROME__[a + '-' + t];
+    var fav  = __FAV__[a + '-' + t];
     var r = document.documentElement;
     r.setAttribute('data-theme', t);
     r.setAttribute('data-accent', a);
@@ -116,7 +144,7 @@ THEME_JS_PRE = '''<script>
     if (m) { m.setAttribute('content', chrome); }
     var f = document.getElementById('favicon');
     if (f) {
-      f.setAttribute('href', "data:image/svg+xml," + encodeURIComponent(
+      f.setAttribute("href", "data:image/svg+xml," + encodeURIComponent(
         "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='13' font-size='13' fill='" + fav + "' font-family='Georgia'>A.</text></svg>"));
     }
     var b1 = document.getElementById('theme-toggle');
@@ -136,8 +164,8 @@ THEME_JS_PRE = '''<script>
 THEME_JS_TOGGLES = '''<script>
 /* theme + accent toggles — persist per visitor */
 (function () {
-  var chrome = { 'ocean-light':'#EFF3F6', 'ocean-dark':'#0B1626', 'paper-light':'#F6F4EE', 'paper-dark':'#1B1915' };
-  var fav  = { 'ocean-light':'#1D6A96', 'ocean-dark':'#4FA3D1', 'paper-light':'#A02C1E', 'paper-dark':'#D4714B' };
+  var chrome = __CHROME__;
+  var fav  = __FAV__;
   function apply() {
     var r = document.documentElement;
     var t = r.getAttribute('data-theme') || 'light';
@@ -146,7 +174,7 @@ THEME_JS_TOGGLES = '''<script>
     if (m) { m.setAttribute('content', chrome[a + '-' + t]); }
     var f = document.getElementById('favicon');
     if (f) {
-      f.setAttribute('href', "data:image/svg+xml," + encodeURIComponent(
+      f.setAttribute("href", "data:image/svg+xml," + encodeURIComponent(
         "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='13' font-size='13' fill='" + fav[a + '-' + t] + "' font-family='Georgia'>A.</text></svg>"));
     }
     var b1 = document.getElementById('theme-toggle');
@@ -233,9 +261,16 @@ HEAD = '''<!DOCTYPE html>
 '''
 
 def head(active, title, desc):
-    return HEAD.format(prejs=THEME_JS_PRE, title=title, desc=desc,
+    # NOTE: nav labels / brand / kicker are RAW HTML by convention (site.json
+    # may carry &amp; / <span>); free-text fields from JSON are escaped in the
+    # page builders below.
+    _c = json.dumps(THEME_COLORS['chrome'])
+    _f = json.dumps(THEME_COLORS['fav'])
+    prejs = THEME_JS_PRE.replace('__CHROME__', _c).replace('__FAV__', _f)
+    toggjs = THEME_JS_TOGGLES.replace('__CHROME__', _c).replace('__FAV__', _f)
+    return HEAD.format(prejs=prejs, title=title, desc=desc,
                        brand=SITE['brand'], links=nav_html(active),
-                       toggjs=THEME_JS_TOGGLES)
+                       toggjs=toggjs)
 
 def contact_block():
     rows = []
@@ -254,35 +289,51 @@ def contact_block():
 ''' + '\n'.join(rows) + '''
     </div>'''
 
-FOOTER = '''</main>
+FOOTER = None  # built in build_footer() from site.json (single source of truth)
+
+def build_footer():
+    items = []
+    for c in SITE['contact']:
+        if c.get('label') in ('GitHub', 'ORCID', 'LinkedIn') and c.get('url'):
+            items.append('<a href="%s" target="_blank" rel="noopener">%s</a>' % (c['url'], c['label']))
+    links = ' · '.join(items)
+    return '''</main>
 <footer class="footbar">
   <div class="wrap">
-    <span class="cr">{footer}</span>
+    <span class="cr">%s</span>
     <span class="fl">
-      <a href="https://github.com/arm2arm" target="_blank" rel="noopener">GitHub</a> ·
-      <a href="https://orcid.org/0000-0002-8913-0690" target="_blank" rel="noopener">ORCID</a> ·
-      <a href="https://www.linkedin.com/in/arm2arm" target="_blank" rel="noopener">LinkedIn</a>
+      %s
     </span>
   </div>
-</footer>'''.format(footer=SITE['footer'])
+</footer>''' % (SITE['footer'], links)
 
-def page(active, title, desc, body, mail=False):
-    p = head(active, title, desc) + body + FOOTER + '\n'
+def page(active, title, desc, body, mail=False, noindex=False):
+    head_part = head(active, title, desc)
+    if noindex:
+        head_part = head_part.replace('<title>', '<meta name="robots" content="noindex">\n<title>', 1)
+    p = head_part + body + build_footer() + '\n'
     if mail:
         p += MAIL_JS
     p += '\n</body>\n</html>\n'
     return p
 
 # ---------------------------------------------------------------- blocks ----
+def _pub_sort_key(x):
+    # in-press / undated works sort first; then year desc; then title
+    yr = x.get('year') or ''
+    pending = 0 if (yr.upper() in ('IN PRESS', 'UNDATED', '')) else 1
+    return (pending, -(int(yr) if yr.isdigit() else 0), x.get('title', ''))
+
 def pub_rows():
-    Q = chr(34)
     rows = []
-    for s in sorted(PUBS, key=lambda x: (-(int(x['year']) if x['year'].isdigit() else 0), x['title'])):
-        t = re.sub(r'\s+', ' ', H.unescape(s['title'])).strip()
-        doi = s['doi']
-        t_esc = t.replace(Q, chr(39))
-        doi_html = ('<a class="doi" href="https://doi.org/' + doi + '" target="_blank" rel="noopener" aria-label="DOI for: ' + t_esc + '">DOI ↗</a>') if doi else ''
-        yr = s['year'] or '\u2014'
+    for s in sorted(PUBS, key=_pub_sort_key):
+        t = re.sub(r'\s+', ' ', H.unescape(s.get('title') or '')).strip()
+        doi = s.get('doi') or ''
+        t_attr = t.replace('"', chr(39))
+        doi_html = ('<a class="doi" href="https://doi.org/' + H.escape(doi, quote=True) +
+                    '" target="_blank" rel="noopener" aria-label="DOI for: ' + t_attr +
+                    '">DOI \u2197</a>' if doi else '')
+        yr = H.escape(s.get('year') or '\u2014')
         rows.append('      <li>\n        <span class="year">%s</span>\n        <span class="cite">%s</span>\n        %s\n      </li>' % (yr, H.escape(t), doi_html))
     return '\n'.join(rows)
 
@@ -308,6 +359,12 @@ def build_home():
     # each <li> block — take the first five
     lis = re.findall(r'<li>.*?</li>', all_rows, flags=re.S)
     recent = '\n'.join(lis[:5])
+    # overview stats from the data layer (single source of truth)
+    ov = (HOME_OVERVIEW
+          .replace('{{PUBS}}', str(len(PUBS)))
+          .replace('{{CITES}}', SITE['stats']['citations'])
+          .replace('{{HINDEX}}', SITE['stats']['hindex'])
+          .replace('{{REPOS}}', str(len(SW))))
     body = '''<header class="hero">
   <div class="wrap hero-grid">
     <div>
@@ -319,7 +376,7 @@ def build_home():
     <img class="portrait" src="avatar.jpg" width="360" height="360" alt="Portrait of ''' + N + '''">
   </div>
 </header>
-''' + HOME_OVERVIEW + '''
+''' + ov + '''
 
 ''' + HOME_RESEARCH + '''
 
@@ -350,7 +407,7 @@ def build_pubs():
     n = len(PUBS)
     body = '''<div class="pagehead"><div class="wrap">
   <h1>Publications</h1>
-  <p class="meta"><span class="n">%d</span> works · 895+ citations · h-index 11 · <a href="https://orcid.org/0000-0002-8913-0690" target="_blank" rel="noopener">full record on ORCID</a></p>
+  <p class="meta"><span class="n">%d</span> works · %s · %s · <a href="https://orcid.org/0000-0002-8913-0690" target="_blank" rel="noopener">full record on ORCID</a></p>
 </div></div>
 <section class="section">
   <div class="wrap">
@@ -358,9 +415,9 @@ def build_pubs():
 %s
     </ul>
   </div>
-</section>''' % (n, pub_rows())
+</section>''' % (n, SITE['stats']['citations'], SITE['stats']['hindex'], pub_rows())
     return page('publications', 'Publications — ' + SITE['name'],
-                'Publication record of ' + SITE['name'] + ': %d works, 895+ citations, h-index 11.' % n,
+                'Publication record of %s: %d works, %s, %s.' % (SITE['name'], n, SITE['stats']['citations'], SITE['stats']['hindex']),
                 body)
 
 def build_projects():
@@ -384,69 +441,6 @@ def build_projects():
                 'Research projects: ' + ', '.join(p['title'].split(' (')[0] for p in PROJECTS[:5]) + '.',
                 body)
 
-BENCH_SECTIONS = '''<section class="section">
-  <div class="wrap">
-    <h2 class="section-title"><span class="idx">01</span> S3-Compatible Object Storage</h2>
-    <p class="section-intro">Head-to-head of two S3-compatible endpoints on the AIP network —
-    <b>RustFS</b> (:9000) vs <b>VersityGW</b> (:7070) — across latency, sequential and parallel workloads,
-    plus synthetic write/read at 1&nbsp;KB, 1&nbsp;MB and 1&nbsp;GB object sizes.</p>
-
-    <figure class="bench-fig">
-      <img src="img/s3_read.webp" width="1200" height="850" alt="S3 read speed comparison: single-object latency, sequential and parallel read throughput">
-      <figcaption>Read speed: single-object latency, sequential full-read, and parallel reads at 1/4/8/16 workers.</figcaption>
-    </figure>
-    <table class="bench-table">
-      <caption>Read results — RustFS wins all read scenarios</caption>
-      <tr><th scope="col">Metric</th><th scope="col">RustFS</th><th scope="col">VersityGW</th></tr>
-      <tr><td>Single small object</td><td class="mnum win">1.6 ms</td><td class="mnum">1.7 ms</td></tr>
-      <tr><td>Sequential full read</td><td class="mnum win">46.1 MB/s</td><td class="mnum">37.6 MB/s</td></tr>
-      <tr><td>Parallel (1 worker)</td><td class="mnum win">43.2 MB/s</td><td class="mnum">33.9 MB/s</td></tr>
-      <tr><td>Parallel (4–16 workers)</td><td class="mnum win">~79 MB/s</td><td class="mnum">~66 MB/s</td></tr>
-    </table>
-
-    <figure class="bench-fig">
-      <img src="img/s3_synth.webp" width="1200" height="852" alt="Synthetic S3 write and read benchmark across object sizes" loading="lazy">
-      <figcaption>Synthetic write &amp; read across object sizes (1&nbsp;KB × 1K, 1&nbsp;MB × 100, 1&nbsp;GB × 10).</figcaption>
-    </figure>
-    <p class="bench-note"><b>Verdict:</b> RustFS is consistently ~20% faster on reads (peaks ≈79 vs ≈66&nbsp;MB/s),
-    while VersityGW dominates writes — 2–3× faster for 1&nbsp;MB/1&nbsp;GB objects, and 14.3&nbsp;s vs 31.1&nbsp;s
-    per 1&nbsp;GB object. Both plateau at 4–8 parallel workers; small objects are inefficient on both.</p>
-  </div>
-</section>
-
-<section class="section tint">
-  <div class="wrap">
-    <h2 class="section-title"><span class="idx">02</span> LLM — SQL Generation (AgentBench DBBench)</h2>
-    <p class="section-intro">Standardized 300-sample evaluation on AgentBench DBBench-std (MySQL SQL generation)
-    across AIP LLM endpoints — identical protocol and dashboard for every model.</p>
-
-    <figure class="bench-fig">
-      <img src="img/llm_cmp.webp" width="1200" height="658" alt="Combined LLM benchmark comparison across AIP endpoints" loading="lazy">
-      <figcaption>Comparison across AIP endpoints (litellm router vs direct host).</figcaption>
-    </figure>
-    <table class="bench-table">
-      <caption>Quick results — 300 samples, single-turn</caption>
-      <tr><th scope="col">Model / endpoint</th><th scope="col">SQL rate</th><th scope="col">Avg time</th><th scope="col">Size</th></tr>
-      <tr><td>aip-best (Qwen3.6-35B, litellm)</td><td class="mnum win">280/300 (93.3%)</td><td class="mnum">4.9 s</td><td class="mnum">36 GB</td></tr>
-      <tr><td>rnj-1 (Gemma3-8B, Ollama)</td><td class="mnum">191/300 (63.7%)</td><td class="mnum">8.5 s</td><td class="mnum">5 GB</td></tr>
-    </table>
-
-    <figure class="bench-fig">
-      <img src="img/llm_aipbest.webp" width="1200" height="539" alt="aip-best model benchmark dashboard" loading="lazy">
-      <figcaption>aip-best (Qwen3.6-35B) — per-sample dashboard.</figcaption>
-    </figure>
-    <figure class="bench-fig">
-      <img src="img/llm_rnj1.webp" width="1200" height="831" alt="rnj-1 Gemma3-8B model benchmark dashboard" loading="lazy">
-      <figcaption>rnj-1 (Gemma3-8B via Ollama) — per-sample dashboard.</figcaption>
-    </figure>
-    <p class="bench-note"><b>Methodology:</b> 300 tasks, 10 Dockerized DBBench workers, SQL detection over
-    code blocks + inline SQL; VRAM-eviction cold loads (~110&nbsp;s every ~20 samples on shared GPUs) and
-    tool-definition quirks per model are documented in the repo.</p>
-    <p class="bench-note" style="margin-top:10px">Raw data, plots and runners:
-    <a href="https://github.com/arm2arm/dbbench-benchmarks" target="_blank" rel="noopener">github.com/arm2arm/dbbench-benchmarks</a></p>
-  </div>
-</section>'''
-
 def build_bench():
     body = '''<div class="pagehead"><div class="wrap">
   <h1>Benchmarks</h1>
@@ -461,16 +455,20 @@ def build_gallery():
     figs = GALLERY['figures']
     items = []
     for i, f in enumerate(figs):
-        lazy = '' if i == 0 else ' loading="lazy"'
+        lazy = '' if i == 0 else ' loading="lazy" fetchpriority="low"'
+        fetch = ' fetchpriority="high"' if i == 0 else ''
+        w = f.get('w', f.get('width', ''))
+        h = f.get('h', f.get('height', ''))
+        alt = H.escape(f.get('alt', ''), quote=True)
         items.append('''      <figure>
-        <img src="%s" width="%s" height="%s" alt="%s"%s>
+        <img src="%s" width="%s" height="%s" alt="%s"%s%s>
         <figcaption>%s</figcaption>
-      </figure>''' % (f['src'], f.get('w',''), f.get('h',''), f['alt'], lazy, f['caption']))
+      </figure>''' % (f['src'], w, h, alt, fetch, lazy, f['caption']))
     # single figure: centered; multiple: auto-flow grid (CSS handles count)
     cls = 'gallery single' if len(figs) == 1 else 'gallery'
     body = '''<div class="pagehead"><div class="wrap">
   <h1>Gallery</h1>
-  <p class="meta">SHBoost · <a href="https://doi.org/10.1051/0004-6361/202451427" target="_blank" rel="noopener">Khalatyan et al. 2024</a> · AIP press release%s</p>
+  <p class="meta">%s%s</p>
 </div></div>
 <section class="section">
   <div class="wrap">
@@ -478,8 +476,12 @@ def build_gallery():
 %s
     </div>
   </div>
-</section>''' % (('&nbsp;·&nbsp; %d figures' % len(figs)) if len(figs) > 1 else '', cls, '\n'.join(items))
-    desc = 'Figure gallery (%d): ' % len(figs) + '; '.join(f['alt'] for f in figs)
+</section>''' % (GALLERY['head'],
+                ('&nbsp;·&nbsp; %d figures' % len(figs)) if len(figs) > 1 else '',
+                cls, '\n'.join(items))
+    alts = ' · '.join(H.escape(f.get('alt', '')) for f in figs[:3])
+    more = (' · +%d more' % (len(figs) - 3)) if len(figs) > 3 else ''
+    desc = 'Figure gallery (%d): %s%s' % (len(figs), alts, more)
     return page('gallery', 'Gallery — ' + SITE['name'], desc, body)
 
 def build_software():
@@ -512,7 +514,7 @@ def build_404():
     and <a href="software.html">software</a>.</p>
   </div>
 </section>'''
-    return page('home', 'Page not found — ' + SITE['name'], 'This page does not exist.', body)
+    return page(None, 'Page not found — ' + SITE['name'], 'This page does not exist.', body, noindex=True)
 
 PAGES = {
     'index.html':        build_home,
@@ -524,11 +526,60 @@ PAGES = {
     '404.html':          build_404,
 }
 
+# ------------------------------------------------------------ validation --
+def validate(name, out):
+    """Static checks over one generated page. Returns a list of issues."""
+    issues = []
+    for tag in ('a','div','ul','li','section','header','footer','main','nav','figure','p','span','table','details'):
+        o = len(re.findall(r'<%s[ >]' % tag, out))
+        c = len(re.findall(r'</%s>' % tag, out))
+        if o != c:
+            issues.append('%s tag imbalance: %d open / %d close' % (tag, o, c))
+    # missing local targets (href/src that are not external or anchors)
+    for attr in ('href', 'src'):
+        for ref in re.findall(r'%s="([^"]+)"' % attr, out):
+            if ref.startswith(('http://','https://','mailto:','data:','#')):
+                continue
+            target = ref.split('#')[0]
+            if target and not os.path.exists(os.path.join(BASE, target)):
+                issues.append('missing local %s: %s' % (attr, ref))
+    # unbalanced tags in every inlined fragment surface above; also flag
+    # nested anchors (parser force-close hazard)
+    for m in re.finditer(r'<a [^>]*>(?:(?!</a>).)*<a ', out, re.S):
+        issues.append('nested <a> at offset %d' % m.start())
+    return issues
+
+def check_content():
+    issues = []
+    for f in GALLERY.get('figures', []):
+        for k in ('src', 'alt', 'caption'):
+            if k not in f:
+                issues.append('gallery figure missing key %r: %s' % (k, f.get('src', '?')))
+        if 'w' not in f and 'width' not in f:
+            issues.append('gallery figure missing w/width (CLS guard): %s' % f.get('src'))
+    for s in PUBS:
+        if not s.get('title'):
+            issues.append('publication entry without title')
+    return issues
+
 if __name__ == '__main__':
+    problems = []
+    if CHECK_ONLY:
+        problems += check_content()
     for name, fn in PAGES.items():
         out = fn()
         if not CHECK_ONLY:
             with open(os.path.join(BASE, name), 'w') as f:
                 f.write(out)
-        print('  %-18s %d bytes%s' % (name, len(out), ' (check only)' if CHECK_ONLY else ''))
+        issues = validate(name, out)
+        problems += ['%s: %s' % (name, i) for i in issues]
+        print('  %-18s %d bytes%s%s' % (name, len(out), ' (check only)' if CHECK_ONLY else '',
+                                        '  ' + ', '.join(issues) if issues else ''))
     print('generated %d pages' % len(PAGES))
+    if CHECK_ONLY:
+        if problems:
+            print('CHECK FAILED (%d issues):' % len(problems))
+            for p in problems:
+                print('  - ' + p)
+            sys.exit(1)
+        print('check passed — no issues')
