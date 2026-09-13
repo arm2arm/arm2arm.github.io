@@ -1,18 +1,18 @@
 /* ============================================================
    Ink & Paper — editorial/academic theme for A. Khalatyan
    Light, typographic, rule-driven. No gradients, no glow,
-   no radius, no shadow, no emoji. One oxblood accent.
+   no radius, no shadow, no emoji. One ocean-blue accent.
    ============================================================ */
 :root {
-  --paper:        #F6F4EE;   /* page background            */
-  --paper-2:      #EFECE3;   /* recessed bands, hover tint */
-  --ink:          #1C1B18;   /* display / headings         */
-  --body:         #3A3833;   /* body copy                  */
-  --muted:        #6E6A60;   /* secondary, meta, captions  */
-  --rule:         #D9D4C7;   /* hairlines                  */
-  --rule-strong:  #B7B0A0;   /* portrait border            */
-  --accent:       #A02C1E;   /* oxblood — links, index, active */
-  --accent-deep:  #7C1F14;   /* link hover                 */
+  --paper:        #0B1626;   /* deep-sea navy background     */
+  --paper-2:      #11202F;   /* recessed bands, hover tint   */
+  --ink:          #E8EDF4;   /* display / headings           */
+  --body:         #B7C4D4;   /* body copy                    */
+  --muted:        #7E93AA;   /* secondary, meta, captions    */
+  --rule:         #24384C;   /* hairlines                    */
+  --rule-strong:  #3A5470;   /* portrait border              */
+  --accent:       #4FA3D1;   /* ocean blue — links, index, active */
+  --accent-deep:  #7FC4E8;   /* link hover (lighter on dark) */
 
   --serif:  "Fraunces","Iowan Old Style",Georgia,"Times New Roman",serif;
   --text:   "Spectral",Georgia,"Times New Roman",serif;
@@ -24,7 +24,7 @@
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; color-scheme: dark; }
 
 body {
   font-family: var(--text);
@@ -398,7 +398,7 @@ img { max-width: 100%; height: auto; display: block; }
 /* skip link */
 .skip {
   position: absolute; left: -9999px; top: 0;
-  background: var(--accent); color: var(--paper); padding: 8px 14px; z-index: 100;
+  background: var(--paper); color: var(--ink); border: 1px solid var(--accent); padding: 8px 14px; z-index: 100;
 }
 .skip:focus { left: 12px; top: 12px; }
 
