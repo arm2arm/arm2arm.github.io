@@ -1,20 +1,24 @@
 /* ============================================================
    Ink & Paper — editorial/academic theme for A. Khalatyan
-   Light (default) + dark (ocean) via data-theme on <html>.
-   Light: warm paper + oxblood accent.
-   Dark:  deep-sea navy + ocean-blue accent.
-   No gradients, no glow, no radius, no shadow, no emoji.
+   2×2 theme system on <html>:
+     data-theme  = light | dark
+     data-accent = ocean | paper
+   → ocean-light, ocean-dark, paper-light, paper-dark (four distinct
+   palettes — not a mix). :root is ocean-light (the JS default, so no
+   flash on a light-system visitor). No gradients, no glow, no radius,
+   no shadow, no emoji. All colors var()-driven.
    ============================================================ */
 :root {
-  --paper:        #F6F4EE;   /* page background            */
-  --paper-2:      #EFECE3;   /* recessed bands, hover tint */
-  --ink:          #1C1B18;   /* display / headings         */
-  --body:         #3A3833;   /* body copy                  */
-  --muted:        #6E6A60;   /* secondary, meta, captions  */
-  --rule:         #D9D4C7;   /* hairlines                  */
-  --rule-strong:  #B7B0A0;   /* portrait border            */
-  --accent:       #A02C1E;   /* oxblood — links, index, active */
-  --accent-deep:  #7C1F14;   /* link hover                 */
+  /* OCEAN · LIGHT — cool paper, deep-blue accent */
+  --paper:        #EFF3F6;
+  --paper-2:      #E3E9EF;
+  --ink:          #16232E;
+  --body:         #33465A;
+  --muted:        #5E7186;
+  --rule:         #C9D4DE;
+  --rule-strong:  #9FB0C0;
+  --accent:       #1D6A96;
+  --accent-deep:  #14506F;
 
   --serif:  "Fraunces","Iowan Old Style",Georgia,"Times New Roman",serif;
   --text:   "Spectral",Georgia,"Times New Roman",serif;
@@ -26,22 +30,49 @@
   color-scheme: light;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+[data-accent="paper"] {
+  /* PAPER · LIGHT — warm paper, oxblood accent */
+  --paper:        #F6F4EE;
+  --paper-2:      #EFECE3;
+  --ink:          #1C1B18;
+  --body:         #3A3833;
+  --muted:        #6E6A60;
+  --rule:         #D9D4C7;
+  --rule-strong:  #B7B0A0;
+  --accent:       #A02C1E;
+  --accent-deep:  #7C1F14;
+}
 
-/* dark (ocean) theme — applied via data-theme="dark" on <html> */
-[data-theme="dark"] {
-  --paper:        #0B1626;   /* deep-sea navy background     */
-  --paper-2:      #11202F;   /* recessed bands, hover tint   */
-  --ink:          #E8EDF4;   /* display / headings           */
-  --body:         #B7C4D4;   /* body copy                    */
-  --muted:        #7E93AA;   /* secondary, meta, captions    */
-  --rule:         #24384C;   /* hairlines                    */
-  --rule-strong:  #3A5470;   /* portrait border              */
-  --accent:       #4FA3D1;   /* ocean blue — links, index, active */
-  --accent-deep:  #7FC4E8;   /* link hover (lighter on dark) */
+[data-accent="ocean"][data-theme="dark"] {
+  /* OCEAN · DARK — deep-sea navy, ocean-blue accent */
+  --paper:        #0B1626;
+  --paper-2:      #11202F;
+  --ink:          #E8EDF4;
+  --body:         #B7C4D4;
+  --muted:        #7E93AA;
+  --rule:         #24384C;
+  --rule-strong:  #3A5470;
+  --accent:       #4FA3D1;
+  --accent-deep:  #7FC4E8;
   color-scheme: dark;
 }
+
+[data-accent="paper"][data-theme="dark"] {
+  /* PAPER · DARK — warm charcoal, terracotta accent */
+  --paper:        #1B1915;
+  --paper-2:      #23201B;
+  --ink:          #ECE7DB;
+  --body:         #C4BDB0;
+  --muted:        #8D867A;
+  --rule:         #3A362E;
+  --rule-strong:  #565043;
+  --accent:       #D4714B;
+  --accent-deep:  #E28F6B;
+  color-scheme: dark;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 
 body {
   font-family: var(--text);
@@ -106,15 +137,15 @@ img { max-width: 100%; height: auto; display: block; }
 .nav-burger span::before { left: 0; right: 0; top: -6px; }
 .nav-burger span::after  { left: 0; right: 0; top: 6px; }
 
-/* dark/light toggle */
-.theme-toggle {
+/* dark/light + palette toggles */
+.theme-toggle, .accent-toggle {
   display: inline-flex; align-items: center; justify-content: center;
   width: 40px; height: 40px; flex: none;
   border: 1px solid var(--rule); background: transparent;
   color: var(--body); cursor: pointer;
   transition: color .15s ease, border-color .15s ease;
 }
-.theme-toggle:hover { color: var(--accent); border-color: var(--accent); }
+.theme-toggle:hover, .accent-toggle:hover { color: var(--accent); border-color: var(--accent); }
 .theme-toggle .ic-moon { display: block; }
 .theme-toggle .ic-sun  { display: none; }
 [data-theme="dark"] .theme-toggle .ic-moon { display: none; }

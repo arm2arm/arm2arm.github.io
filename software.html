@@ -3,23 +3,38 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#F6F4EE">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='13' font-size='13' fill='%23A02C1E' font-family='Georgia'%3EA.%3C/text%3E%3C/svg%3E">
+<meta name="theme-color" content="#EFF3F6">
+<link id="favicon" rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='13' font-size='13' fill='%231D6A96' font-family='Georgia'%3EA.%3C/text%3E%3C/svg%3E">
 <script>
-/* apply saved theme before first paint — no flash */
+/* apply saved theme + accent before first paint — no flash */
 (function () {
   try {
+    var d = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
     var t = localStorage.getItem('theme');
-    if (t !== 'light' && t !== 'dark') {
-      t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    }
-    document.documentElement.setAttribute('data-theme', t);
+    if (t !== 'light' && t !== 'dark') { t = d ? 'dark' : 'light'; }
+    var a = localStorage.getItem('accent');
+    if (a !== 'ocean' && a !== 'paper') { a = 'ocean'; }
+    var chrome = { 'ocean-light':'#EFF3F6', 'ocean-dark':'#0B1626', 'paper-light':'#F6F4EE', 'paper-dark':'#1B1915' }[a + '-' + t];
+    var fav  = { 'ocean-light':'#1D6A96', 'ocean-dark':'#4FA3D1', 'paper-light':'#A02C1E', 'paper-dark':'#D4714B' }[a + '-' + t];
+    var r = document.documentElement;
+    r.setAttribute('data-theme', t);
+    r.setAttribute('data-accent', a);
     var m = document.querySelector('meta[name="theme-color"]');
-    if (m) m.setAttribute('content', t === 'dark' ? '#0B1626' : '#F6F4EE');
-    var b = document.getElementById('theme-toggle');
-    if (b) {
-      b.setAttribute('aria-label', t === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
-      b.setAttribute('aria-pressed', t === 'dark');
+    if (m) { m.setAttribute('content', chrome); }
+    var f = document.getElementById('favicon');
+    if (f) {
+      f.setAttribute('href', "data:image/svg+xml," + encodeURIComponent(
+        "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='13' font-size='13' fill='" + fav + "' font-family='Georgia'>A.</text></svg>"));
+    }
+    var b1 = document.getElementById('theme-toggle');
+    if (b1) {
+      b1.setAttribute('aria-label', t === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+      b1.setAttribute('aria-pressed', t === 'dark');
+    }
+    var b2 = document.getElementById('accent-toggle');
+    if (b2) {
+      b2.setAttribute('aria-label', a === 'ocean' ? 'Switch to Paper palette' : 'Switch to Ocean palette');
+      b2.setAttribute('aria-pressed', a === 'paper');
     }
   } catch (e) {}
 })();
@@ -37,6 +52,9 @@
   <div class="nav-inner">
     <a class="brand" href="index.html">A. Khalatyan<span class="dot">.</span></a>
     <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Toggle navigation menu">
+    <button type="button" class="accent-toggle" id="accent-toggle" aria-label="Switch to Paper palette" aria-pressed="false">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor" stroke="none"/></svg>
+    </button>
     <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" aria-pressed="false">
       <svg class="ic-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4m11.4-11.4 1.4-1.4"/></svg>
       <svg class="ic-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
@@ -54,20 +72,48 @@
   </div>
 </nav>
 <script>
-/* dark/light toggle — persists per visitor */
+/* theme + accent toggles — persist per visitor */
 (function () {
-  var b = document.getElementById('theme-toggle');
-  if (!b) return;
-  b.addEventListener('click', function () {
-    var root = document.documentElement;
-    var t = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-    root.setAttribute('data-theme', t);
-    try { localStorage.setItem('theme', t); } catch (e) {}
+  var chrome = { 'ocean-light':'#EFF3F6', 'ocean-dark':'#0B1626', 'paper-light':'#F6F4EE', 'paper-dark':'#1B1915' };
+  var fav  = { 'ocean-light':'#1D6A96', 'ocean-dark':'#4FA3D1', 'paper-light':'#A02C1E', 'paper-dark':'#D4714B' };
+  function apply() {
+    var r = document.documentElement;
+    var t = r.getAttribute('data-theme') || 'light';
+    var a = r.getAttribute('data-accent') || 'ocean';
     var m = document.querySelector('meta[name="theme-color"]');
-    if (m) m.setAttribute('content', t === 'dark' ? '#0B1626' : '#F6F4EE');
-    b.setAttribute('aria-label', t === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
-    b.setAttribute('aria-pressed', t === 'dark');
-  });
+    if (m) { m.setAttribute('content', chrome[a + '-' + t]); }
+    var f = document.getElementById('favicon');
+    if (f) {
+      f.setAttribute('href', "data:image/svg+xml," + encodeURIComponent(
+        "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='13' font-size='13' fill='" + fav[a + '-' + t] + "' font-family='Georgia'>A.</text></svg>"));
+    }
+    var b1 = document.getElementById('theme-toggle');
+    if (b1) {
+      b1.setAttribute('aria-label', t === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+      b1.setAttribute('aria-pressed', t === 'dark');
+    }
+    var b2 = document.getElementById('accent-toggle');
+    if (b2) {
+      b2.setAttribute('aria-label', a === 'ocean' ? 'Switch to Paper palette' : 'Switch to Ocean palette');
+      b2.setAttribute('aria-pressed', a === 'paper');
+    }
+  }
+  var b1 = document.getElementById('theme-toggle');
+  if (b1) { b1.addEventListener('click', function () {
+    var r = document.documentElement;
+    var t = r.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    r.setAttribute('data-theme', t);
+    try { localStorage.setItem('theme', t); } catch (e) {}
+    apply();
+  }); }
+  var b2 = document.getElementById('accent-toggle');
+  if (b2) { b2.addEventListener('click', function () {
+    var r = document.documentElement;
+    var a = r.getAttribute('data-accent') === 'ocean' ? 'paper' : 'ocean';
+    r.setAttribute('data-accent', a);
+    try { localStorage.setItem('accent', a); } catch (e) {}
+    apply();
+  }); }
 })();
 </script>
 <main id="main">
