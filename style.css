@@ -1,18 +1,20 @@
 /* ============================================================
    Ink & Paper — editorial/academic theme for A. Khalatyan
-   Light, typographic, rule-driven. No gradients, no glow,
-   no radius, no shadow, no emoji. One ocean-blue accent.
+   Light (default) + dark (ocean) via data-theme on <html>.
+   Light: warm paper + oxblood accent.
+   Dark:  deep-sea navy + ocean-blue accent.
+   No gradients, no glow, no radius, no shadow, no emoji.
    ============================================================ */
 :root {
-  --paper:        #0B1626;   /* deep-sea navy background     */
-  --paper-2:      #11202F;   /* recessed bands, hover tint   */
-  --ink:          #E8EDF4;   /* display / headings           */
-  --body:         #B7C4D4;   /* body copy                    */
-  --muted:        #7E93AA;   /* secondary, meta, captions    */
-  --rule:         #24384C;   /* hairlines                    */
-  --rule-strong:  #3A5470;   /* portrait border              */
-  --accent:       #4FA3D1;   /* ocean blue — links, index, active */
-  --accent-deep:  #7FC4E8;   /* link hover (lighter on dark) */
+  --paper:        #F6F4EE;   /* page background            */
+  --paper-2:      #EFECE3;   /* recessed bands, hover tint */
+  --ink:          #1C1B18;   /* display / headings         */
+  --body:         #3A3833;   /* body copy                  */
+  --muted:        #6E6A60;   /* secondary, meta, captions  */
+  --rule:         #D9D4C7;   /* hairlines                  */
+  --rule-strong:  #B7B0A0;   /* portrait border            */
+  --accent:       #A02C1E;   /* oxblood — links, index, active */
+  --accent-deep:  #7C1F14;   /* link hover                 */
 
   --serif:  "Fraunces","Iowan Old Style",Georgia,"Times New Roman",serif;
   --text:   "Spectral",Georgia,"Times New Roman",serif;
@@ -24,7 +26,21 @@
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; color-scheme: dark; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+/* dark (ocean) theme — applied via data-theme="dark" on <html> */
+[data-theme="dark"] {
+  --paper:        #0B1626;   /* deep-sea navy background     */
+  --paper-2:      #11202F;   /* recessed bands, hover tint   */
+  --ink:          #E8EDF4;   /* display / headings           */
+  --body:         #B7C4D4;   /* body copy                    */
+  --muted:        #7E93AA;   /* secondary, meta, captions    */
+  --rule:         #24384C;   /* hairlines                    */
+  --rule-strong:  #3A5470;   /* portrait border              */
+  --accent:       #4FA3D1;   /* ocean blue — links, index, active */
+  --accent-deep:  #7FC4E8;   /* link hover (lighter on dark) */
+  color-scheme: dark;
+}
 
 body {
   font-family: var(--text);
@@ -85,6 +101,20 @@ img { max-width: 100%; height: auto; display: block; }
 .nav-burger span { top: 50%; transform: translateY(-50%); }
 .nav-burger span::before { left: 0; right: 0; top: -6px; }
 .nav-burger span::after  { left: 0; right: 0; top: 6px; }
+
+/* dark/light toggle */
+.theme-toggle {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 34px; height: 30px; flex: none;
+  border: 1px solid var(--rule); background: transparent;
+  color: var(--body); cursor: pointer;
+  transition: color .15s ease, border-color .15s ease;
+}
+.theme-toggle:hover { color: var(--accent); border-color: var(--accent); }
+.theme-toggle .ic-moon { display: block; }
+.theme-toggle .ic-sun  { display: none; }
+[data-theme="dark"] .theme-toggle .ic-moon { display: none; }
+[data-theme="dark"] .theme-toggle .ic-sun  { display: block; }
 
 .nav-links { display: flex; gap: 2px; align-items: center; }
 .nav-link {
