@@ -3,86 +3,118 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0a0e1a">
+<meta name="theme-color" content="#F6F4EE">
 <title>Software — Arman Khalatyan</title>
-<meta name="description" content="Software and tools by Dr. Arman Khalatyan: pipelines, agents, and HPC utilities.">
+<meta name="description" content="Software and tools: pipelines, viewers, agents, and HPC utilities — 13 repositories.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Spline+Sans+Mono:wght@400;500&family=Spectral:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="bg-glow"></div>
+<a class="skip" href="#main">Skip to content</a>
 <nav class="topnav">
-  <div class="wrap nav-inner">
-    <a class="brand" href="index.html">AK<span>·khalatyan</span></a>
-    <div class="nav-links"><a class="nav-link" href="index.html">Home</a> <a class="nav-link" href="publications.html">Publications</a> <a class="nav-link" href="projects.html">Projects</a> <a class="nav-link" href="gallery.html">Gallery</a> <a class="nav-link active" href="software.html">Software</a> <a class="nav-link" href="index.html#contact">Contact</a></div>
-  </div>
-</nav><main>
-<div class="pagehead"><div class="wrap"><h1>Software</h1></div></div>
-<section id="software" class="section alt">
-    <div class="wrap">
-      <p class="pub-note">Tools, pipelines and platform code I have built — full list on
-      <a href="https://github.com/arm2arm" target="_blank" rel="noopener">GitHub</a>.</p>
-      <div class="os-list">
-        <a class="os-item" href="https://github.com/arm2arm/AstroAgentAssistant" target="_blank" rel="noopener">
-          <span class="os-name">AstroAgentAssistant <span class="os-lang">Python · skills</span></span>
-          <span class="os-desc">Human-centric AI assistance in astronomy: a curated, human-reviewed skill library that teaches agents reproducible astrophysics workflows.</span>
-        </a>
-        <a class="os-item" href="https://gitlab.aip.de/akhalatyan/SH26" target="_blank" rel="noopener">
-          <span class="os-name">SH26 <span class="os-lang">Python · Dask · Parquet</span></span>
-          <span class="os-desc">400M-star catalogue pipelines: float32 schema migration, full-catalogue joins, plotting engine and 129-figure publication suite.</span>
-        </a>
-        <a class="os-item" href="https://github.com/arm2arm/starhorse_db" target="_blank" rel="noopener">
-          <span class="os-name">starhorse_db <span class="os-lang">Jupyter</span></span>
-          <span class="os-desc">Tutorial and access layer for the StarHorse database at gaia.aip.de.</span>
-        </a>
-        <a class="os-item" href="https://github.com/arm2arm/shboost24" target="_blank" rel="noopener">
-          <span class="os-name">shboost24 <span class="os-lang">Jupyter</span></span>
-          <span class="os-desc">SHBoost: transferring spectroscopic stellar labels to 217M Gaia DR3 XP stars.</span>
-        </a>
-        <a class="os-item" href="https://github.com/arm2arm/llm4reana" target="_blank" rel="noopener">
-          <span class="os-name">llm4reana <span class="os-lang">Python</span></span>
-          <span class="os-desc">Experiments driving REANA research workflows with a locally hosted LLM (PhysicsLLM).</span>
-        </a>
-        <a class="os-item" href="https://github.com/arm2arm/reanademo1" target="_blank" rel="noopener">
-          <span class="os-name">reanademo1 <span class="os-lang">REANA</span></span>
-          <span class="os-desc">Reference demo for running DRP-Hub analyses as REANA workflows.</span>
-        </a>
-        <a class="os-item" href="https://github.com/arm2arm/astro-aiko" target="_blank" rel="noopener">
-          <span class="os-name">astro-aiko <span class="os-lang">Docker</span></span>
-          <span class="os-desc">Reproducible Docker base image for AIP astrophysics data analysis.</span>
-        </a>
-        <a class="os-item" href="https://github.com/arm2arm/gaiautils" target="_blank" rel="noopener">
-          <span class="os-name">gaiautils <span class="os-lang">Python</span></span>
-          <span class="os-desc">Practical access utilities and cheatsheet for the gaia.aip.de portal.</span>
-        </a>
-        <a class="os-item" href="https://github.com/arm2arm/al" target="_blank" rel="noopener">
-          <span class="os-name">al <span class="os-lang">Python</span></span>
-          <span class="os-desc">LTO tape-management utility collection for HPC archival storage.</span>
-        </a>
-        <a class="os-item" href="https://github.com/arm2arm/StarTracer" target="_blank" rel="noopener">
-          <span class="os-name">StarTracer <span class="os-lang">C++</span></span>
-          <span class="os-desc">Traces AFOF star groups in GADGET cosmological simulations.</span>
-        </a>
-        <a class="os-item" href="https://github.com/arm2arm/mymc.sh" target="_blank" rel="noopener">
-          <span class="os-name">mymc.sh <span class="os-lang">Shell</span></span>
-          <span class="os-desc">MinIO upload/download helper for large dataset transfers on the cluster.</span>
-        </a>
-        <a class="os-item" href="https://github.com/arm2arm/excosm-potsdam-25" target="_blank" rel="noopener">
-          <span class="os-name">excosm-potsdam-25 <span class="os-lang">C · notes</span></span>
-          <span class="os-desc">Lecture notes and code from the EXCOSM Potsdam workshop (Horizon Europe).</span>
-        </a>
-      </div>
+  <div class="nav-inner">
+    <a class="brand" href="index.html">A. Khalatyan<span class="dot">.</span></a>
+    <input type="checkbox" id="nav-toggle" class="nav-toggle">
+    <label for="nav-toggle" class="nav-burger" aria-label="Menu"><span></span></label>
+    <div class="nav-links">
+      <a class="nav-link" href="index.html">Home</a>
+      <a class="nav-link" href="publications.html">Publications</a>
+      <a class="nav-link" href="projects.html">Projects</a>
+      <a class="nav-link" href="benchmarks.html">Benchmarks</a>
+      <a class="nav-link" href="gallery.html">Gallery</a>
+      <a class="nav-link active" href="software.html">Software</a>
+      <a class="nav-link" href="index.html#contact">Contact</a>
     </div>
-  </section>
-</main>
+  </div>
+</nav>
+<main id="main">
+<div class="pagehead"><div class="wrap">
+  <h1>Software</h1>
+  <p class="meta"><span class="n">13</span> repositories · full list on <a href="https://github.com/arm2arm" target="_blank" rel="noopener">GitHub</a></p>
+</div></div>
+<section class="section">
+  <div class="wrap">
+    <div class="ledger">
+      <a class="row" href="https://github.com/arm2arm/AstroAgentAssistant" target="_blank" rel="noopener">
+        <div class="rhead"><span class="rnum">01</span><span class="rtitle">AstroAgentAssistant <span class="lang">Python · skills</span></span></div>
+        <p class="rdesc">Human-centric AI assistance in astronomy — a curated, human-reviewed skill library that teaches agents reproducible astrophysics workflows.</p>
+        
+      </a>
+      <a class="row" href="https://gitlab.aip.de/akhalatyan/SH26" target="_blank" rel="noopener">
+        <div class="rhead"><span class="rnum">02</span><span class="rtitle">SH26 <span class="lang">Python · Dask · Parquet</span></span></div>
+        <p class="rdesc">400M-star catalogue pipelines: float32 schema migration, full-catalogue joins, plotting engine and 129-figure publication suite.</p>
+        
+      </a>
+      <a class="row" href="https://github.com/arm2arm/dbbench-benchmarks" target="_blank" rel="noopener">
+        <div class="rhead"><span class="rnum">03</span><span class="rtitle">dbbench-benchmarks <span class="lang">Python</span></span></div>
+        <p class="rdesc">S3 object-storage and LLM/SQL benchmark suites (RustFS vs VersityGW; AgentBench DBBench) with standardized dashboards.</p>
+        <div class="rmeta"><span>see <b>Benchmarks</b> page</span></div>
+      </a>
+      <a class="row" href="https://github.com/arm2arm/starhorse_db" target="_blank" rel="noopener">
+        <div class="rhead"><span class="rnum">04</span><span class="rtitle">starhorse_db <span class="lang">Jupyter</span></span></div>
+        <p class="rdesc">Tutorial and access layer for the StarHorse database at gaia.aip.de.</p>
+        
+      </a>
+      <a class="row" href="https://github.com/arm2arm/shboost24" target="_blank" rel="noopener">
+        <div class="rhead"><span class="rnum">05</span><span class="rtitle">shboost24 <span class="lang">Jupyter</span></span></div>
+        <p class="rdesc">SHBoost: transferring spectroscopic stellar labels to 217M Gaia DR3 XP stars.</p>
+        
+      </a>
+      <a class="row" href="https://github.com/arm2arm/llm4reana" target="_blank" rel="noopener">
+        <div class="rhead"><span class="rnum">06</span><span class="rtitle">llm4reana <span class="lang">Python</span></span></div>
+        <p class="rdesc">Experiments driving REANA research workflows with a locally hosted LLM (PhysicsLLM).</p>
+        
+      </a>
+      <a class="row" href="https://github.com/arm2arm/reanademo1" target="_blank" rel="noopener">
+        <div class="rhead"><span class="rnum">07</span><span class="rtitle">reanademo1 <span class="lang">REANA</span></span></div>
+        <p class="rdesc">Reference demo for running DRP-Hub analyses as REANA workflows.</p>
+        
+      </a>
+      <a class="row" href="https://github.com/arm2arm/astro-aiko" target="_blank" rel="noopener">
+        <div class="rhead"><span class="rnum">08</span><span class="rtitle">astro-aiko <span class="lang">Docker</span></span></div>
+        <p class="rdesc">Reproducible Docker base image for AIP astrophysics data analysis.</p>
+        
+      </a>
+      <a class="row" href="https://github.com/arm2arm/gaiautils" target="_blank" rel="noopener">
+        <div class="rhead"><span class="rnum">09</span><span class="rtitle">gaiautils <span class="lang">Python</span></span></div>
+        <p class="rdesc">Practical access utilities and cheatsheet for the gaia.aip.de portal.</p>
+        
+      </a>
+      <a class="row" href="https://github.com/arm2arm/al" target="_blank" rel="noopener">
+        <div class="rhead"><span class="rnum">10</span><span class="rtitle">al <span class="lang">Python</span></span></div>
+        <p class="rdesc">LTO tape-management utility collection for HPC archival storage.</p>
+        
+      </a>
+      <a class="row" href="https://github.com/arm2arm/StarTracer" target="_blank" rel="noopener">
+        <div class="rhead"><span class="rnum">11</span><span class="rtitle">StarTracer <span class="lang">C++</span></span></div>
+        <p class="rdesc">Traces AFOF star groups in GADGET cosmological simulations.</p>
+        
+      </a>
+      <a class="row" href="https://github.com/arm2arm/mymc.sh" target="_blank" rel="noopener">
+        <div class="rhead"><span class="rnum">12</span><span class="rtitle">mymc.sh <span class="lang">Shell</span></span></div>
+        <p class="rdesc">MinIO upload/download helper for large dataset transfers on the cluster.</p>
+        
+      </a>
+      <a class="row" href="https://github.com/arm2arm/excosm-potsdam-25" target="_blank" rel="noopener">
+        <div class="rhead"><span class="rnum">13</span><span class="rtitle">excosm-potsdam-25 <span class="lang">C · notes</span></span></div>
+        <p class="rdesc">Lecture notes and code from the EXCOSM Potsdam workshop (Horizon Europe).</p>
+        
+      </a>
+    </div>
+  </div>
+</section></main>
 <footer class="footbar">
   <div class="wrap">
-    <span>© 2026 Dr. Arman Khalatyan · Leibniz Institute for Astrophysics Potsdam (AIP)</span>
-    <span class="foot-links">
+    <span class="cr">© 2026 A. Khalatyan · Leibniz Institute for Astrophysics Potsdam</span>
+    <span class="fl">
       <a href="https://github.com/arm2arm" target="_blank" rel="noopener">GitHub</a> ·
       <a href="https://orcid.org/0000-0002-8913-0690" target="_blank" rel="noopener">ORCID</a> ·
       <a href="https://www.linkedin.com/in/arm2arm" target="_blank" rel="noopener">LinkedIn</a>
     </span>
   </div>
 </footer>
+
 </body>
 </html>

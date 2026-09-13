@@ -3,115 +3,189 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0a0e1a">
-<title>Dr. Arman Khalatyan — Researcher at AIP</title>
-<meta name="description" content="Dr. Arman Khalatyan — astrophysics, HPC, and ML for science. Researcher at the AIP.">
+<meta name="theme-color" content="#F6F4EE">
+<title>Arman Khalatyan — Researcher at AIP</title>
+<meta name="description" content="Dr. Arman Khalatyan — astrophysics, HPC, and machine learning for science. Researcher at the Leibniz Institute for Astrophysics Potsdam (AIP).">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Spline+Sans+Mono:wght@400;500&family=Spectral:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="bg-glow"></div>
+<a class="skip" href="#main">Skip to content</a>
 <nav class="topnav">
-  <div class="wrap nav-inner">
-    <a class="brand" href="index.html">AK<span>·khalatyan</span></a>
-    <div class="nav-links"><a class="nav-link active" href="index.html">Home</a> <a class="nav-link" href="publications.html">Publications</a> <a class="nav-link" href="projects.html">Projects</a> <a class="nav-link" href="gallery.html">Gallery</a> <a class="nav-link" href="software.html">Software</a> <a class="nav-link" href="index.html#contact">Contact</a></div>
-  </div>
-</nav><main>
-<header class="hero">
-  <div class="wrap">
-    <img class="avatar" src="avatar.jpg" alt="Dr. Arman Khalatyan">
-    <div class="hero-text">
-      <h1>Dr. Arman Khalatyan</h1>
-      <p class="role">Researcher · Astrophysics &amp; Scientific Computing</p>
-      <p class="org">Astro-Informatics Platform (AIP)</p>
-      <p class="tagline">
-        Building the data infrastructure for precision astrophysics — from 400&nbsp;million-star
-        catalogues to the HPC and AI systems that fit them.
-      </p>
+  <div class="nav-inner">
+    <a class="brand" href="index.html">A. Khalatyan<span class="dot">.</span></a>
+    <input type="checkbox" id="nav-toggle" class="nav-toggle">
+    <label for="nav-toggle" class="nav-burger" aria-label="Menu"><span></span></label>
+    <div class="nav-links">
+      <a class="nav-link active" href="index.html">Home</a>
+      <a class="nav-link" href="publications.html">Publications</a>
+      <a class="nav-link" href="projects.html">Projects</a>
+      <a class="nav-link" href="benchmarks.html">Benchmarks</a>
+      <a class="nav-link" href="gallery.html">Gallery</a>
+      <a class="nav-link" href="software.html">Software</a>
+      <a class="nav-link" href="index.html#contact">Contact</a>
     </div>
+  </div>
+</nav>
+<main id="main">
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="kicker">Researcher · Astrophysics &amp; Scientific Computing</p>
+      <h1>Arman Khalatyan</h1>
+      <p class="org">Leibniz Institute for Astrophysics Potsdam (AIP)</p>
+      <p class="tagline">Building the data infrastructure for precision astrophysics — from
+      400&nbsp;million-star catalogues to the HPC, ML and AI systems that fit, benchmark and ship them.</p>
+    </div>
+    <img class="portrait" src="avatar.jpg" width="360" height="360" alt="Portrait of Dr. Arman Khalatyan">
   </div>
 </header>
-<section id="research" class="section">
-    <div class="wrap">
-      <h2 class="section-title">Research &amp; Work</h2>
-      <div class="cards">
-        <article class="card">
-          <div class="card-icon" aria-hidden="true">⭐</div>
-          <h3>Stellar Parameters &amp; Extinction at Scale</h3>
-          <p>Full stellar parameter and dust-extinction posteriors for hundreds of
-          millions of stars (StarHorse / SHBoost), chrono-chemical mapping of the
-          Milky Way disc, bulge and bar with Gaia DR3, APOGEE and 4MOST, and the
-          4MIDABLE survey design for 4MOST.</p>
-          <ul class="tags">
-            <li>StarHorse</li><li>Gaia</li><li>4MOST</li><li>Milky Way</li>
-          </ul>
-        </article>
 
-        <article class="card">
-          <div class="card-icon" aria-hidden="true">🌌</div>
-          <h3>Galaxy Formation &amp; Hestia</h3>
-          <p>High-resolution cosmological simulations of the Local Group and
-          early galaxy assembly — from the first thin discs at z &gt; 4 to AGN
-          feedback in galaxy evolution (MareNostrum, Hestia).</p>
-          <ul class="tags">
-            <li>N-body</li><li>simulation</li><li>AGN</li>
-          </ul>
-        </article>
-      </div>
-    </div>
-  </section>
-<section id="expertise" class="section alt">
+  <!-- CONTENTS: overview of the whole site -->
+  <section class="section">
     <div class="wrap">
-      <h2 class="section-title">Technical Expertise</h2>
-      <div class="exp-grid">
-        <div class="exp">
-          <h4>HPC &amp; Cluster Computing</h4>
-          <p>400+ node SLURM clusters, fault-tolerant large-scale jobs, NUMA/RDMA,
-          throughput optimization, autoscaling refill loops.</p>
+      <h2 class="section-title"><span class="idx">01</span> On this site</h2>
+      <div class="contents">
+        <a class="contents-row" href="publications.html">
+          <span class="cnum">01</span>
+          <span class="ctitle">Publications</span>
+          <span class="cdesc">34 works — from compact stars to 400-million-star Milky Way mapping. 895+ citations, h-index 11.</span>
+          <span class="arrow">→</span>
+        </a>
+        <a class="contents-row" href="projects.html">
+          <span class="cnum">02</span>
+          <span class="ctitle">Projects</span>
+          <span class="cdesc">PhysicsLLM, SH26, PMViewer, VR@AIP, DRP-Hub (PUNCH4NFDI) and more — research in depth.</span>
+          <span class="arrow">→</span>
+        </a>
+        <a class="contents-row" href="benchmarks.html">
+          <span class="cnum">03</span>
+          <span class="ctitle">Benchmarks</span>
+          <span class="cdesc">S3 object-storage and LLM/SQL-generation benchmarks with full result plots.</span>
+          <span class="arrow">→</span>
+        </a>
+        <a class="contents-row" href="gallery.html">
+          <span class="cnum">04</span>
+          <span class="ctitle">Gallery</span>
+          <span class="cdesc">Color–magnitude diagram of 217 million SHBoost-labeled Gaia stars (2024 press release).</span>
+          <span class="arrow">→</span>
+        </a>
+        <a class="contents-row" href="software.html">
+          <span class="cnum">05</span>
+          <span class="ctitle">Software</span>
+          <span class="cdesc">Pipelines, viewers, agents and HPC utilities — 13 repositories.</span>
+          <span class="arrow">→</span>
+        </a>
+        <a class="contents-row" href="index.html#contact">
+          <span class="cnum">06</span>
+          <span class="ctitle">Contact</span>
+          <span class="cdesc">Email, GitHub, ORCID, LinkedIn, institute page.</span>
+          <span class="arrow">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESEARCH -->
+  <section class="section tint">
+    <div class="wrap">
+      <h2 class="section-title"><span class="idx">02</span> Research &amp; Work</h2>
+      <div class="ledger" style="margin-top:28px">
+        <div class="row">
+          <div class="rhead">
+            <span class="rnum">01</span>
+            <span class="rtitle">Stellar Parameters &amp; Extinction at Scale</span>
+          </div>
+          <p class="rdesc">Full stellar-parameter and dust-extinction posteriors for hundreds of millions of stars
+          (StarHorse / SHBoost), chrono-chemical mapping of the Milky Way disc, bulge and bar with Gaia DR3,
+          APOGEE and 4MOST, and the 4MIDABLE survey design for 4MOST.</p>
+          <ul class="tags"><li>StarHorse</li><li>Gaia</li><li>4MOST</li><li>Milky Way</li></ul>
         </div>
-        <div class="exp">
-          <h4>Data Engineering</h4>
-          <p>PyArrow, Dask, Parquet, S3/MinIO, large-scale pipelines (210&nbsp;GB full catalogue),
-          schema migration, end-to-end checksum verification.</p>
-        </div>
-        <div class="exp">
-          <h4>Machine Learning &amp; MLOps</h4>
-          <p>vLLM inference, LoRA/QLoRA fine-tuning, model quantization (GGUF),
-          evaluation harnesses, agentic orchestration.</p>
-        </div>
-        <div class="exp">
-          <h4>Astrophysics Research</h4>
-          <p>Stellar parameter estimation, extinction mapping, galaxy formation,
-          N-body simulation, large spectroscopic surveys.</p>
-        </div>
-        <div class="exp">
-          <h4>DevOps &amp; Systems</h4>
-          <p>Docker, Kubernetes, CI/CD, HAProxy, monitoring, Proxmox,
-          secure multi-host infrastructure.</p>
-        </div>
-        <div class="exp">
-          <h4>Languages &amp; Tooling</h4>
-          <p>Python (primary), Bash, C/C++ (simulation), LaTeX,
-          Git, Jupyter, scientific visualization (Matplotlib).</p>
+        <div class="row">
+          <div class="rhead">
+            <span class="rnum">02</span>
+            <span class="rtitle">Galaxy Formation &amp; the Local Group</span>
+          </div>
+          <p class="rdesc">High-resolution cosmological simulations of the Local Group and early galaxy assembly —
+          from the first thin discs at z &gt; 4 to AGN feedback in galaxy evolution (MareNostrum, Hestia).
+          Earlier work on the QCD phase diagram and compact stars.</p>
+          <ul class="tags"><li>N-body</li><li>simulation</li><li>AGN</li></ul>
         </div>
       </div>
     </div>
   </section>
-<section id="contact" class="section">
-    <div class="wrap contact">
-      <h2 class="section-title">Contact</h2>
-      <div class="contact-links">
-        <a href="#" class="clink mail-btn" data-mail="ed.pia|naytalahka" id="mail-btn">✉️ Email</a>
-        <a href="https://github.com/arm2arm" target="_blank" rel="noopener" class="clink">GitHub / arm2arm</a>
-        <a href="https://orcid.org/0000-0002-8913-0690" target="_blank" rel="noopener" class="clink">ORCID / 0000-0002-8913-0690</a>
-        <a href="https://www.linkedin.com/in/arm2arm" target="_blank" rel="noopener" class="clink">LinkedIn / arm2arm</a>
+
+  <!-- EXPERTISE -->
+  <section class="section">
+    <div class="wrap">
+      <h2 class="section-title"><span class="idx">03</span> Technical Expertise</h2>
+      <div class="exp-grid" style="margin-top:28px">
+        <div class="exp"><h4>HPC &amp; Cluster Computing</h4>
+          <p>400+ node SLURM clusters, fault-tolerant large-scale jobs, NUMA/RDMA, throughput optimization.</p></div>
+        <div class="exp"><h4>Data Engineering</h4>
+          <p>PyArrow, Dask, Parquet, S3/MinIO, 210&nbsp;GB full-catalogue pipelines, end-to-end checksum verification.</p></div>
+        <div class="exp"><h4>Machine Learning &amp; MLOps</h4>
+          <p>vLLM inference, LoRA fine-tuning, model quantization, evaluation harnesses, agentic orchestration.</p></div>
+        <div class="exp"><h4>Astrophysics Research</h4>
+          <p>Stellar parameter estimation, extinction mapping, galaxy formation, N-body simulation, spectroscopic surveys.</p></div>
+        <div class="exp"><h4>DevOps &amp; Systems</h4>
+          <p>Docker, Kubernetes, CI/CD, HAProxy, monitoring, Proxmox, secure multi-host infrastructure.</p></div>
+        <div class="exp"><h4>Languages &amp; Tooling</h4>
+          <p>Python (primary), Bash, C/C++ (simulation, OpenGL), LaTeX, Git, Jupyter, Matplotlib.</p></div>
       </div>
     </div>
   </section>
-</main>
+
+  <!-- LATEST PUBLICATIONS preview -->
+  <section class="section tint">
+    <div class="wrap">
+      <h2 class="section-title"><span class="idx">04</span> Recent Publications</h2>
+      <p class="section-intro">The five most recent — the full record lives on the
+      <a href="publications.html">publications page</a>.</p>
+      <ul class="pubs" style="margin-top:28px">
+        <li><span class="year">2026</span><span class="cite">The spheroidal bulge of the Milky Way: Chemodynamically distinct from the inner-thick disc and bar <em>A&amp;A</em>.</span><a class="doi" href="https://doi.org/10.1051/0004-6361/202556326" target="_blank" rel="noopener">DOI ↗</a></li>
+        <li><span class="year">2026</span><span class="cite">The Nineteenth Data Release of the Sloan Digital Sky Survey <em>ApJS</em>.</span><a class="doi" href="https://doi.org/10.3847/1538-4365/ae4697" target="_blank" rel="noopener">DOI ↗</a></li>
+        <li><span class="year">2025</span><span class="cite">Latest Developments of the PUNCH4NFDI Compute and Storage Infrastructures <em>EPJ Web Conf.</em>.</span><a class="doi" href="https://doi.org/10.1051/epjconf/202533701264" target="_blank" rel="noopener">DOI ↗</a></li>
+        <li><span class="year">2024</span><span class="cite">Transferring spectroscopic stellar labels to 217 million Gaia DR3 XP stars with SHBoost <em>A&amp;A</em>.</span><a class="doi" href="https://doi.org/10.1051/0004-6361/202451427" target="_blank" rel="noopener">DOI ↗</a></li>
+        <li><span class="year">2024</span><span class="cite">Discovery of the local counterpart of disc galaxies at z &gt; 4: The oldest thin disc of the Milky Way using Gaia-RVS <em>A&amp;A</em>.</span><a class="doi" href="https://doi.org/10.1051/0004-6361/202449445" target="_blank" rel="noopener">DOI ↗</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="section">
+    <div class="wrap">
+      <h2 class="section-title"><span class="idx">05</span> Contact</h2>
+      <div class="contact-list">
+        <a href="#" id="mail-btn" data-mail="ed.pia|naytalahka">
+          <span class="clabel">Email</span>
+          <span class="cval">…</span>
+        </a>
+        <a href="https://github.com/arm2arm" target="_blank" rel="noopener">
+          <span class="clabel">GitHub</span>
+          <span class="cval">github.com/arm2arm <span class="arrow">→</span></span>
+        </a>
+        <a href="https://orcid.org/0000-0002-8913-0690" target="_blank" rel="noopener">
+          <span class="clabel">ORCID</span>
+          <span class="cval">0000-0002-8913-0690 <span class="arrow">→</span></span>
+        </a>
+        <a href="https://www.linkedin.com/in/arm2arm" target="_blank" rel="noopener">
+          <span class="clabel">LinkedIn</span>
+          <span class="cval">linkedin.com/in/arm2arm <span class="arrow">→</span></span>
+        </a>
+        <a href="https://www.aip.de/en/members/arman-khalatyan/" target="_blank" rel="noopener">
+          <span class="clabel">Institute</span>
+          <span class="cval">AIP — Leibniz-Institut für Astrophysik Potsdam <span class="arrow">→</span></span>
+        </a>
+      </div>
+    </div>
+  </section></main>
 <footer class="footbar">
   <div class="wrap">
-    <span>© 2026 Dr. Arman Khalatyan · Leibniz Institute for Astrophysics Potsdam (AIP)</span>
-    <span class="foot-links">
+    <span class="cr">© 2026 A. Khalatyan · Leibniz Institute for Astrophysics Potsdam</span>
+    <span class="fl">
       <a href="https://github.com/arm2arm" target="_blank" rel="noopener">GitHub</a> ·
       <a href="https://orcid.org/0000-0002-8913-0690" target="_blank" rel="noopener">ORCID</a> ·
       <a href="https://www.linkedin.com/in/arm2arm" target="_blank" rel="noopener">LinkedIn</a>
@@ -119,15 +193,17 @@
   </div>
 </footer>
 <script>
-// Email is assembled at runtime from the reversed, obfuscated data-mail
-// attribute so crawlers/bots scraping the HTML source never see a bare address.
+// Email assembled at runtime from the reversed, obfuscated data-mail attribute
+// so crawlers scraping the HTML source never see a bare address.
 (function () {
   var a = document.getElementById('mail-btn');
   if (!a || !a.dataset.mail) return;
   var m = a.dataset.mail.split('').reverse().join('').replace('|', '@');
   a.href = 'mailto:' + m;
-  a.innerHTML = '✉️ ' + m;
+  var v = a.querySelector('.cval');
+  if (v) v.innerHTML = m + ' <span class="arrow">→</span>';
 })();
 </script>
+
 </body>
 </html>

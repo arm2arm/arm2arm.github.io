@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#F6F4EE">
+<title>Benchmarks — Arman Khalatyan</title>
+<meta name="description" content="S3 object-storage and LLM/SQL-generation benchmarks with full result plots (dbbench-benchmarks).">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Spline+Sans+Mono:wght@400;500&family=Spectral:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<nav class="topnav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html">A. Khalatyan<span class="dot">.</span></a>
+    <input type="checkbox" id="nav-toggle" class="nav-toggle">
+    <label for="nav-toggle" class="nav-burger" aria-label="Menu"><span></span></label>
+    <div class="nav-links">
+      <a class="nav-link" href="index.html">Home</a>
+      <a class="nav-link" href="publications.html">Publications</a>
+      <a class="nav-link" href="projects.html">Projects</a>
+      <a class="nav-link active" href="benchmarks.html">Benchmarks</a>
+      <a class="nav-link" href="gallery.html">Gallery</a>
+      <a class="nav-link" href="software.html">Software</a>
+      <a class="nav-link" href="index.html#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+<main id="main">
+<div class="pagehead"><div class="wrap">
+  <h1>Benchmarks</h1>
+  <p class="meta">S3 object storage · LLM / SQL generation · <a href="https://github.com/arm2arm/dbbench-benchmarks" target="_blank" rel="noopener">dbbench-benchmarks repo</a></p>
+</div></div>
+
+<section class="section">
+  <div class="wrap">
+    <h2 class="section-title"><span class="idx">01</span> S3-Compatible Object Storage</h2>
+    <p class="section-intro">Head-to-head of two S3-compatible endpoints on the AIP network —
+    <b>RustFS</b> (:9000) vs <b>VersityGW</b> (:7070) — across latency, sequential and parallel workloads,
+    plus synthetic write/read at 1&nbsp;KB, 1&nbsp;MB and 1&nbsp;GB object sizes.</p>
+
+    <figure class="bench-fig">
+      <img src="img/s3_read.webp" width="1200" height="850" alt="S3 read speed comparison: single-object latency, sequential and parallel read throughput" loading="lazy">
+      <figcaption>Read speed: single-object latency, sequential full-read, and parallel reads at 1/4/8/16 workers.</figcaption>
+    </figure>
+    <table class="bench-table">
+      <caption>Read results — RustFS wins all read scenarios</caption>
+      <tr><th>Metric</th><th>RustFS</th><th>VersityGW</th></tr>
+      <tr><td>Single small object</td><td class="mnum win">1.6 ms</td><td class="mnum">1.7 ms</td></tr>
+      <tr><td>Sequential full read</td><td class="mnum win">46.1 MB/s</td><td class="mnum">37.6 MB/s</td></tr>
+      <tr><td>Parallel (1 worker)</td><td class="mnum win">43.2 MB/s</td><td class="mnum">33.9 MB/s</td></tr>
+      <tr><td>Parallel (4–16 workers)</td><td class="mnum win">~79 MB/s</td><td class="mnum">~66 MB/s</td></tr>
+    </table>
+
+    <figure class="bench-fig">
+      <img src="img/s3_synth.webp" width="1200" height="852" alt="Synthetic S3 write and read benchmark across object sizes" loading="lazy">
+      <figcaption>Synthetic write &amp; read across object sizes (1&nbsp;KB × 1K, 1&nbsp;MB × 100, 1&nbsp;GB × 10).</figcaption>
+    </figure>
+    <p class="bench-note"><b>Verdict:</b> RustFS is consistently ~20% faster on reads (peaks ≈79 vs ≈66&nbsp;MB/s),
+    while VersityGW dominates writes — 2–3× faster for 1&nbsp;MB/1&nbsp;GB objects, and 14.3&nbsp;s vs 31.1&nbsp;s
+    per 1&nbsp;GB object. Both plateau at 4–8 parallel workers; small objects are inefficient on both.</p>
+  </div>
+</section>
+
+<section class="section tint">
+  <div class="wrap">
+    <h2 class="section-title"><span class="idx">02</span> LLM — SQL Generation (AgentBench DBBench)</h2>
+    <p class="section-intro">Standardized 300-sample evaluation on AgentBench DBBench-std (MySQL SQL generation)
+    across AIP LLM endpoints — identical protocol and dashboard for every model.</p>
+
+    <figure class="bench-fig">
+      <img src="img/llm_cmp.webp" width="1200" height="658" alt="Combined LLM benchmark comparison across AIP endpoints" loading="lazy">
+      <figcaption>Comparison across AIP endpoints (litellm router vs direct host).</figcaption>
+    </figure>
+    <table class="bench-table">
+      <caption>Quick results — 300 samples, single-turn</caption>
+      <tr><th>Model / endpoint</th><th>SQL rate</th><th>Avg time</th><th>Size</th></tr>
+      <tr><td>aip-best (Qwen3.6-35B, litellm)</td><td class="mnum win">280/300 (93.3%)</td><td class="mnum">4.9 s</td><td class="mnum">36 GB</td></tr>
+      <tr><td>rnj-1 (Gemma3-8B, Ollama)</td><td class="mnum">191/300 (63.7%)</td><td class="mnum">8.5 s</td><td class="mnum">5 GB</td></tr>
+    </table>
+
+    <figure class="bench-fig">
+      <img src="img/llm_aipbest.webp" width="1200" height="539" alt="aip-best model benchmark dashboard" loading="lazy">
+      <figcaption>aip-best (Qwen3.6-35B) — per-sample dashboard.</figcaption>
+    </figure>
+    <figure class="bench-fig">
+      <img src="img/llm_rnj1.webp" width="1200" height="831" alt="rnj-1 Gemma3-8B model benchmark dashboard" loading="lazy">
+      <figcaption>rnj-1 (Gemma3-8B via Ollama) — per-sample dashboard.</figcaption>
+    </figure>
+    <p class="bench-note"><b>Methodology:</b> 300 tasks, 10 Dockerized DBBench workers, SQL detection over
+    code blocks + inline SQL; VRAM-eviction cold loads (~110&nbsp;s every ~20 samples on shared GPUs) and
+    tool-definition quirks per model are documented in the repo.</p>
+    <p class="bench-note" style="margin-top:10px">Raw data, plots and runners:
+    <a href="https://github.com/arm2arm/dbbench-benchmarks" target="_blank" rel="noopener">github.com/arm2arm/dbbench-benchmarks</a></p>
+  </div>
+</section></main>
+<footer class="footbar">
+  <div class="wrap">
+    <span class="cr">© 2026 A. Khalatyan · Leibniz Institute for Astrophysics Potsdam</span>
+    <span class="fl">
+      <a href="https://github.com/arm2arm" target="_blank" rel="noopener">GitHub</a> ·
+      <a href="https://orcid.org/0000-0002-8913-0690" target="_blank" rel="noopener">ORCID</a> ·
+      <a href="https://www.linkedin.com/in/arm2arm" target="_blank" rel="noopener">LinkedIn</a>
+    </span>
+  </div>
+</footer>
+
+</body>
+</html>

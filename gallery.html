@@ -3,45 +3,59 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0a0e1a">
+<meta name="theme-color" content="#F6F4EE">
 <title>Gallery — Arman Khalatyan</title>
-<meta name="description" content="Figure gallery: SHBoost color-magnitude diagram (217 million Gaia stars).">
+<meta name="description" content="Figure gallery: SHBoost color-magnitude diagram of 217 million Gaia stars (2024).">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Spline+Sans+Mono:wght@400;500&family=Spectral:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="bg-glow"></div>
+<a class="skip" href="#main">Skip to content</a>
 <nav class="topnav">
-  <div class="wrap nav-inner">
-    <a class="brand" href="index.html">AK<span>·khalatyan</span></a>
-    <div class="nav-links"><a class="nav-link" href="index.html">Home</a> <a class="nav-link" href="publications.html">Publications</a> <a class="nav-link" href="projects.html">Projects</a> <a class="nav-link active" href="gallery.html">Gallery</a> <a class="nav-link" href="software.html">Software</a> <a class="nav-link" href="index.html#contact">Contact</a></div>
-  </div>
-</nav><main>
-<div class="pagehead"><div class="wrap"><h1>Gallery</h1></div></div>
-<section id="gallery" class="section">
-    <div class="wrap">
-      <p class="pub-note">Color&ndash;magnitude diagram of the SHBoost sample —
-      spectroscopic stellar labels transferred to 217 million Gaia DR3 XP stars
-      (<a href="https://doi.org/10.1051/0004-6361/202451427" target="_blank" rel="noopener">Khalatyan et al. 2024</a>).
-      From the AIP press release:
-      <a href="https://www.aip.de/en/news/milky-way-gaia-machine-learning/" target="_blank" rel="noopener">A sharper view of the Milky Way</a>.</p>
-      <div class="gallery single">
-        <figure>
-          <img src="img/cmd_shboost2024.jpg" width="300" height="300" alt="Color-magnitude diagram of 217 million SHBoost-labeled Gaia stars">
-          <figcaption>Color&ndash;magnitude diagram of the 217M-star SHBoost sample (Gaia DR3 XP).</figcaption>
-        </figure>
-      </div>
+  <div class="nav-inner">
+    <a class="brand" href="index.html">A. Khalatyan<span class="dot">.</span></a>
+    <input type="checkbox" id="nav-toggle" class="nav-toggle">
+    <label for="nav-toggle" class="nav-burger" aria-label="Menu"><span></span></label>
+    <div class="nav-links">
+      <a class="nav-link" href="index.html">Home</a>
+      <a class="nav-link" href="publications.html">Publications</a>
+      <a class="nav-link" href="projects.html">Projects</a>
+      <a class="nav-link" href="benchmarks.html">Benchmarks</a>
+      <a class="nav-link active" href="gallery.html">Gallery</a>
+      <a class="nav-link" href="software.html">Software</a>
+      <a class="nav-link" href="index.html#contact">Contact</a>
     </div>
-  </section>
-</main>
+  </div>
+</nav>
+<main id="main">
+<div class="pagehead"><div class="wrap">
+  <h1>Gallery</h1>
+  <p class="meta">SHBoost · <a href="https://doi.org/10.1051/0004-6361/202451427" target="_blank" rel="noopener">Khalatyan et al. 2024</a> · AIP press release</p>
+</div></div>
+<section class="section">
+  <div class="wrap">
+    <div class="gallery">
+      <figure>
+        <img src="img/cmd_shboost2024.jpg" width="300" height="300" alt="Color-magnitude diagram of 217 million SHBoost-labeled Gaia DR3 XP stars">
+        <figcaption>Color–magnitude diagram of the 217M-star SHBoost sample (Gaia DR3 XP) —
+        spectroscopic labels transferred by machine learning in four hours on a single GPU.
+        From the AIP press release <a href="https://www.aip.de/en/news/milky-way-gaia-machine-learning/" target="_blank" rel="noopener">“A sharper view of the Milky Way”</a>.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section></main>
 <footer class="footbar">
   <div class="wrap">
-    <span>© 2026 Dr. Arman Khalatyan · Leibniz Institute for Astrophysics Potsdam (AIP)</span>
-    <span class="foot-links">
+    <span class="cr">© 2026 A. Khalatyan · Leibniz Institute for Astrophysics Potsdam</span>
+    <span class="fl">
       <a href="https://github.com/arm2arm" target="_blank" rel="noopener">GitHub</a> ·
       <a href="https://orcid.org/0000-0002-8913-0690" target="_blank" rel="noopener">ORCID</a> ·
       <a href="https://www.linkedin.com/in/arm2arm" target="_blank" rel="noopener">LinkedIn</a>
     </span>
   </div>
 </footer>
+
 </body>
 </html>
