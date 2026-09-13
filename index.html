@@ -224,7 +224,7 @@
     <div class="wrap contact">
       <h2 class="section-title">Contact</h2>
       <div class="contact-links">
-        <a href="mailto:akhalatyan@aip.de" class="clink">✉️ Email</a>
+        <a href="#" class="clink" data-mail="ed.pia|naytalahka" id="mail-btn">✉️ Email</a>
         <a href="https://github.com/arm2arm" target="_blank" rel="noopener" class="clink">GitHub / @arm2arm</a>
         <a href="https://orcid.org/0000-0002-8913-0690" target="_blank" rel="noopener" class="clink">ORCID / 0000-0002-8913-0690</a>
         <a href="https://www.linkedin.com/in/arm2arm" target="_blank" rel="noopener" class="clink">LinkedIn / arm2arm</a>
@@ -233,5 +233,16 @@
     </div>
   </section>
 </main>
+<script>
+// Email is assembled at runtime from the reversed, obfuscated data-mail
+// attribute so crawlers/bots scraping the HTML source never see a bare address.
+(function () {
+  var a = document.getElementById('mail-btn');
+  if (!a || !a.dataset.mail) return;
+  var m = a.dataset.mail.split('').reverse().join('').replace('|', '@');
+  a.href = 'mailto:' + m;
+  a.innerHTML = '✉️ ' + m;
+})();
+</script>
 </body>
 </html>
