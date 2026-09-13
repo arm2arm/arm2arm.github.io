@@ -1,1 +1,249 @@
-<h1>coming soon...</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dr. Arman Khalatyan — Researcher @ AIP</title>
+<meta name="description" content="Dr. Arman Khalatyan — astrophysics, HPC, and ML for science. Researcher at the AIP.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="bg-glow"></div>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="avatar" aria-hidden="true">AK</div>
+    <div class="hero-text">
+      <h1>Dr. Arman Khalatyan</h1>
+      <p class="role">Researcher · Astrophysics &amp; Scientific Computing</p>
+      <p class="org">Astro-Informatics Platform (AIP)</p>
+      <p class="tagline">
+        Building the data infrastructure for precision astrophysics — from 400&nbsp;million-star
+        catalogues to the HPC and AI systems that fit them.
+      </p>
+    </div>
+    <div class="hero-actions">
+      <a class="btn primary" href="#research">Research</a>
+      <a class="btn" href="#publications">Publications</a>
+      <a class="btn" href="#contact">Contact</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- RESEARCH -->
+  <section id="research" class="section">
+    <div class="wrap">
+      <h2 class="section-title">Research &amp; Work</h2>
+      <div class="cards">
+        <article class="card">
+          <div class="card-icon">🌌</div>
+          <h3>SH26 — Galactic Bulge Catalogue</h3>
+          <p>A 400+ million-star spectroscopic catalogue of the Milky Way bulge and disc.
+          I own the end-to-end data pipeline: schema design, float32 migration, a full-catalogue
+          Dask/Parquet join (210&nbsp;GB), and the publication-quality figure suite.</p>
+          <ul class="tags">
+            <li>Dask</li><li>Parquet</li><li>float32</li><li>Gaia</li><li>HEALPix</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <div class="card-icon">⭐</div>
+          <h3>StarHorse &amp; AVFIX</h3>
+          <p>StarHorse fits full stellar parameter + extinction posteriors (GMM3) for hundreds of
+          millions of stars. I discovered a systematic dust-extinction prior bug, derived the true
+          affected region, and designed the 940-tile / 69.9M-star rerun — a fault-tolerant,
+          journal-resuming v5 runner driving a 400+ node SLURM cluster to completion.</p>
+          <ul class="tags">
+            <li>StarHorse</li><li>SLURM</li><li>fault-tolerance</li><li>extinction</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <div class="card-icon">🔁</div>
+          <h3>DRP-Hub &amp; REANA</h3>
+          <p>Digital Research Products for reproducible science. I contribute to the federated
+          DRP-Hub infrastructure and the REANA reproducible-analytics platform — turning
+          one-off analyses into reusable, citable research products.</p>
+          <ul class="tags">
+            <li>Reproducibility</li><li>REANA</li><li>DRP-Hub</li><li>Kubernetes</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <div class="card-icon">🤖</div>
+          <h3>PhysicsLLM &amp; AI for Science</h3>
+          <p>Building agentic AI assistants for astrophysics: the AstroAgentAssistant open-source
+          skill library, Hermes Agent tooling, and local LLM serving (vLLM) tuned for scientific
+          workflows.</p>
+          <ul class="tags">
+            <li>LLM</li><li>agents</li><li>vLLM</li><li>Open Source</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERTISE -->
+  <section id="expertise" class="section alt">
+    <div class="wrap">
+      <h2 class="section-title">Technical Expertise</h2>
+      <div class="exp-grid">
+        <div class="exp">
+          <h4>HPC &amp; Cluster Computing</h4>
+          <p>400+ node SLURM clusters, fault-tolerant large-scale jobs, NUMA/RDMA,
+          throughput optimization, autoscaling refill loops.</p>
+        </div>
+        <div class="exp">
+          <h4>Data Engineering</h4>
+          <p>PyArrow, Dask, Parquet, S3/MinIO, petabyte-scale pipelines,
+          schema migration, provenance &amp; integrity (MD5 round-trips).</p>
+        </div>
+        <div class="exp">
+          <h4>Machine Learning &amp; MLOps</h4>
+          <p>vLLM inference, LoRA/QLoRA fine-tuning, model quantization (GGUF),
+          evaluation harnesses, agentic orchestration.</p>
+        </div>
+        <div class="exp">
+          <h4>Scientific Astrophysics</h4>
+          <p>Stellar parameter estimation, extinction mapping, galaxy formation,
+          N-body simulation, large spectroscopic surveys.</p>
+        </div>
+        <div class="exp">
+          <h4>DevOps &amp; Systems</h4>
+          <p>Docker, Kubernetes, CI/CD, HAProxy, monitoring, Proxmox,
+          secure multi-host infrastructure.</p>
+        </div>
+        <div class="exp">
+          <h4>Languages &amp; Tooling</h4>
+          <p>Python (primary), Bash, C/C++ (simulation), LaTeX,
+          Git, Jupyter, scientific visualization (Matplotlib).</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PUBLICATIONS -->
+  <section id="publications" class="section">
+    <div class="wrap">
+      <h2 class="section-title">Selected Publications</h2>
+      <p class="pub-note">A selection from astrophysics and physics work
+      (895+ citations, h-index 11). Full list available on request.</p>
+      <ul class="pubs">
+        <li>
+          <span class="year">2023</span>
+          <span class="cite">
+            StarHorse results for spectroscopic surveys and Gaia DR3:
+            Chrono-chemi[mapping].
+            <em>A&amp;A</em>.
+          </span>
+          <a class="doi" href="https://doi.org/10.1051/0004-6361/202245399">DOI</a>
+        </li>
+        <li>
+          <span class="year">2020</span>
+          <span class="cite">
+            The Hestia project: simulations of the Local Group.
+            <em>MNRAS</em>.
+          </span>
+          <a class="doi" href="https://doi.org/10.1093/mnras/staa2541">DOI</a>
+        </li>
+        <li>
+          <span class="year">2019</span>
+          <span class="cite">
+            4MOST: Project overview and information for the First Call for Proposals.
+            <em>ASP Conf. Ser.</em>.
+          </span>
+          <a class="doi" href="https://doi.org/10.18727/0722-6691/5117">DOI</a>
+        </li>
+        <li>
+          <span class="year">2019</span>
+          <span class="cite">
+            4MOST Consortium Survey 4: Milky Way Disc and Bulge High-Resolution Survey.
+          </span>
+          <a class="doi" href="https://doi.org/10.18727/0722-6691/5123">DOI</a>
+        </li>
+        <li>
+          <span class="year">2019</span>
+          <span class="cite">
+            Kinematics with Gaia DR2: the force of a dwarf.
+            <em>MNRAS</em>.
+          </span>
+          <a class="doi" href="https://doi.org/10.1093/mnras/stz2343">DOI</a>
+        </li>
+        <li>
+          <span class="year">2018</span>
+          <span class="cite">
+            Spiral arm crossings inferred from ridges in Gaia stellar velocity distributions.
+            <em>MNRAS</em>.
+          </span>
+          <a class="doi" href="https://doi.org/10.1093/mnras/sty2077">DOI</a>
+        </li>
+        <li>
+          <span class="year">2009</span>
+          <span class="cite">
+            The role of black holes in galaxy formation and evolution.
+            <em>Nature</em>.
+          </span>
+          <a class="doi" href="https://doi.org/10.1038/nature08135">DOI</a>
+        </li>
+        <li>
+          <span class="year">2007</span>
+          <span class="cite">
+            Is AGN feedback necessary to form red elliptical galaxies?
+            <em>MNRAS</em>.
+          </span>
+          <a class="doi" href="https://doi.org/10.1111/j.1365-2966.2008.13093.x">DOI</a>
+        </li>
+        <li>
+          <span class="year">2006</span>
+          <span class="cite">
+            Dark and baryonic matter in the MareNostrum Universe.
+            <em>AIP Conf. Proc.</em>.
+          </span>
+          <a class="doi" href="https://doi.org/10.1063/1.2409061">DOI</a>
+        </li>
+        <li>
+          <span class="year">2004</span>
+          <span class="cite">
+            Exploring the QCD phase diagram with compact stars.
+            <em>Nucl. Phys. B (Proc. Suppl.)</em>.
+          </span>
+          <a class="doi" href="https://doi.org/10.1016/j.nuclphysbps.2004.12.021">DOI</a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- OPEN SOURCE -->
+  <section id="opensource" class="section alt">
+    <div class="wrap">
+      <h2 class="section-title">Open Source</h2>
+      <div class="os-list">
+        <a class="os-item" href="https://github.com/arm2arm/AstroAgentAssistant" target="_blank" rel="noopener">
+          <span class="os-name">AstroAgentAssistant</span>
+          <span class="os-desc">Custom skill library for agentic astrophysics workflows</span>
+        </a>
+        <a class="os-item" href="https://gitlab.aip.de/akhalatyan/SH26" target="_blank" rel="noopener">
+          <span class="os-name">SH26</span>
+          <span class="os-desc">SH26 catalogue pipelines, notebooks, and figure suite</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="section">
+    <div class="wrap contact">
+      <h2 class="section-title">Contact</h2>
+      <div class="contact-links">
+        <a href="mailto:arman.khalatyan@example.com" class="clink">✉️ Email</a>
+        <a href="https://github.com/arm2arm" target="_blank" rel="noopener" class="clink">GitHub / @arm2arm</a>
+        <!-- <a href="https://orcid.org/XXXX-XXXX-XXXX-XXXX" class="clink">ORCID</a> -->
+        <!-- <a href="https://www.linkedin.com/in/..." class="clink">LinkedIn</a> -->
+      </div>
+      <p class="foot">© 2026 Dr. Arman Khalatyan · AIP · Built with plain HTML/CSS.</p>
+    </div>
+  </section>
+</main>
+</body>
+</html>
