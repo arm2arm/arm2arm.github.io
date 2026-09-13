@@ -35,11 +35,8 @@ body {
   display: flex; flex-direction: column; gap: 22px; align-items: flex-start;
 }
 .avatar {
-  width: 84px; height: 84px; border-radius: 22px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 30px; font-weight: 800; letter-spacing: 1px;
-  color: #06121f;
-  background: linear-gradient(135deg, var(--accent-2), var(--accent));
+  width: 92px; height: 92px; border-radius: 24px; object-fit: cover;
+  border: 2px solid var(--line);
   box-shadow: 0 8px 30px rgba(77,163,255,0.35);
 }
 .hero h1 { font-size: clamp(30px, 5vw, 44px); font-weight: 800; letter-spacing: -0.5px; }
