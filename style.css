@@ -112,7 +112,25 @@ body {
 }
 .doi:hover { border-color: var(--accent); }
 
-/* open source */
+/* gallery */
+.gallery {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 18px; margin-top: 30px;
+}
+.gallery figure {
+  background: var(--panel); border: 1px solid var(--line); border-radius: 14px;
+  padding: 12px; transition: all .15s ease;
+}
+.gallery figure:hover { border-color: var(--accent); transform: translateY(-3px); }
+.gallery img {
+  width: 100%; height: auto; border-radius: 8px; display: block;
+  background: #fff;
+}
+.gallery figcaption {
+  color: var(--muted); font-size: 13px; margin-top: 10px; line-height: 1.5;
+}
+
+/* open source / software */
 .os-list { display: flex; flex-direction: column; gap: 12px; margin-top: 26px; }
 .os-item {
   display: flex; flex-direction: column; gap: 3px;
@@ -122,6 +140,11 @@ body {
 }
 .os-item:hover { border-color: var(--accent); transform: translateX(4px); }
 .os-name { font-weight: 700; font-size: 15.5px; }
+.os-name .os-lang {
+  font-weight: 600; font-size: 12px; color: var(--accent-2);
+  background: var(--accent-dim); padding: 2px 9px; border-radius: 999px;
+  margin-left: 8px; vertical-align: middle;
+}
 .os-desc { color: var(--muted); font-size: 13.5px; }
 
 /* contact */

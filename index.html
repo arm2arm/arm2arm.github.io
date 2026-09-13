@@ -25,7 +25,9 @@
     <div class="hero-actions">
       <a class="btn primary" href="#research">Research</a>
       <a class="btn" href="#projects">Projects</a>
+      <a class="btn" href="#gallery">Gallery</a>
       <a class="btn" href="#publications">Publications</a>
+      <a class="btn" href="#software">Software</a>
       <a class="btn" href="#contact">Contact</a>
     </div>
   </div>
@@ -346,18 +348,96 @@
     </div>
   </section>
 
-  <!-- OPEN SOURCE -->
-  <section id="opensource" class="section alt">
+  <!-- GALLERY -->
+  <section id="gallery" class="section">
     <div class="wrap">
-      <h2 class="section-title">Open Source</h2>
+      <h2 class="section-title">Figure Gallery</h2>
+      <p class="pub-note">Selected figures from the <strong>SH26</strong> catalogue work
+      (400+ million stars). Full suite of 129 publication figures in the
+      <a href="https://gitlab.aip.de/akhalatyan/SH26" target="_blank" rel="noopener">SH26 repository</a>.</p>
+      <div class="gallery">
+        <figure>
+          <img src="img/cmd.png" alt="SH26 color-magnitude diagram" loading="lazy">
+          <figcaption>Color&ndash;magnitude diagram of the SH26 sample (full-catalogue, float32).</figcaption>
+        </figure>
+        <figure>
+          <img src="img/skymap_density.png" alt="Star density skymap" loading="lazy">
+          <figcaption>Star-density skymap of the full SH26 sample (Mollweide).</figcaption>
+        </figure>
+        <figure>
+          <img src="img/skymap_av.png" alt="Extinction skymap" loading="lazy">
+          <figcaption>Color excess / extinction map across the sky.</figcaption>
+        </figure>
+        <figure>
+          <img src="img/kiel.png" alt="Kiel diagram populations" loading="lazy">
+          <figcaption>Population separation in the Kiel diagram.</figcaption>
+        </figure>
+        <figure>
+          <img src="img/galactic_xyz.png" alt="Galactic XYZ populations" loading="lazy">
+          <figcaption>Galactic Cartesian structure: disc, bulge and halo populations.</figcaption>
+        </figure>
+        <figure>
+          <img src="img/tsne.png" alt="t-SNE vs UMAP" loading="lazy">
+          <figcaption>Dimensionality reduction of the spectroscopic catalogue (t-SNE vs UMAP).</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOFTWARE -->
+  <section id="software" class="section alt">
+    <div class="wrap">
+      <h2 class="section-title">Software</h2>
+      <p class="pub-note">Tools, pipelines and platform code I have built — full list on
+      <a href="https://github.com/arm2arm" target="_blank" rel="noopener">GitHub</a>.</p>
       <div class="os-list">
         <a class="os-item" href="https://github.com/arm2arm/AstroAgentAssistant" target="_blank" rel="noopener">
-          <span class="os-name">AstroAgentAssistant</span>
-          <span class="os-desc">Custom skill library for agentic astrophysics workflows</span>
+          <span class="os-name">AstroAgentAssistant <span class="os-lang">Python · skills</span></span>
+          <span class="os-desc">Human-centric AI assistance in astronomy: a curated, human-reviewed skill library that teaches agents reproducible astrophysics workflows.</span>
         </a>
         <a class="os-item" href="https://gitlab.aip.de/akhalatyan/SH26" target="_blank" rel="noopener">
-          <span class="os-name">SH26</span>
-          <span class="os-desc">SH26 catalogue pipelines, notebooks, and figure suite</span>
+          <span class="os-name">SH26 <span class="os-lang">Python · Dask · Parquet</span></span>
+          <span class="os-desc">400M-star catalogue pipelines: float32 schema migration, full-catalogue joins, plotting engine and 129-figure publication suite.</span>
+        </a>
+        <a class="os-item" href="https://github.com/arm2arm/starhorse_db" target="_blank" rel="noopener">
+          <span class="os-name">starhorse_db <span class="os-lang">Jupyter</span></span>
+          <span class="os-desc">Tutorial and access layer for the StarHorse database at gaia.aip.de.</span>
+        </a>
+        <a class="os-item" href="https://github.com/arm2arm/shboost24" target="_blank" rel="noopener">
+          <span class="os-name">shboost24 <span class="os-lang">Jupyter</span></span>
+          <span class="os-desc">SHBoost: transferring spectroscopic stellar labels to 217M Gaia DR3 XP stars.</span>
+        </a>
+        <a class="os-item" href="https://github.com/arm2arm/llm4reana" target="_blank" rel="noopener">
+          <span class="os-name">llm4reana <span class="os-lang">Python</span></span>
+          <span class="os-desc">Experiments driving REANA research workflows with a locally hosted LLM (PhysicsLLM).</span>
+        </a>
+        <a class="os-item" href="https://github.com/arm2arm/reanademo1" target="_blank" rel="noopener">
+          <span class="os-name">reanademo1 <span class="os-lang">REANA</span></span>
+          <span class="os-desc">Reference demo for running DRP-Hub analyses as REANA workflows.</span>
+        </a>
+        <a class="os-item" href="https://github.com/arm2arm/astro-aiko" target="_blank" rel="noopener">
+          <span class="os-name">astro-aiko <span class="os-lang">Docker</span></span>
+          <span class="os-desc">Reproducible Docker base image for AIP astrophysics data analysis.</span>
+        </a>
+        <a class="os-item" href="https://github.com/arm2arm/gaiautils" target="_blank" rel="noopener">
+          <span class="os-name">gaiautils <span class="os-lang">Python</span></span>
+          <span class="os-desc">Practical access utilities and cheatsheet for the gaia.aip.de portal.</span>
+        </a>
+        <a class="os-item" href="https://github.com/arm2arm/al" target="_blank" rel="noopener">
+          <span class="os-name">al <span class="os-lang">Python</span></span>
+          <span class="os-desc">LTO tape-management utility collection for HPC archival storage.</span>
+        </a>
+        <a class="os-item" href="https://github.com/arm2arm/StarTracer" target="_blank" rel="noopener">
+          <span class="os-name">StarTracer <span class="os-lang">C++</span></span>
+          <span class="os-desc">Traces AFOF star groups in GADGET cosmological simulations.</span>
+        </a>
+        <a class="os-item" href="https://github.com/arm2arm/mymc.sh" target="_blank" rel="noopener">
+          <span class="os-name">mymc.sh <span class="os-lang">Shell</span></span>
+          <span class="os-desc">MinIO upload/download helper for large dataset transfers on the cluster.</span>
+        </a>
+        <a class="os-item" href="https://github.com/arm2arm/excosm-potsdam-25" target="_blank" rel="noopener">
+          <span class="os-name">excosm-potsdam-25 <span class="os-lang">C · notes</span></span>
+          <span class="os-desc">Lecture notes and code from the EXCOSM Potsdam workshop (Horizon Europe).</span>
         </a>
       </div>
     </div>
