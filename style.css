@@ -71,7 +71,7 @@ body {
 
 /* research cards */
 .cards {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
   gap: 18px; margin-top: 30px;
 }
 .card {
@@ -90,7 +90,7 @@ body {
 
 /* expertise */
 .exp-grid {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
   gap: 22px; margin-top: 30px;
 }
 .exp h4 { font-size: 15.5px; color: var(--accent-2); margin-bottom: 6px; }
@@ -114,7 +114,7 @@ body {
 
 /* gallery */
 .gallery {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
   gap: 18px; margin-top: 30px;
 }
 .gallery figure {
@@ -163,3 +163,15 @@ body {
   .pubs li { grid-template-columns: 44px 1fr; }
   .pubs li .doi { grid-column: 2; justify-self: start; }
 }
+
+/* a11y polish */
+a:focus-visible, .btn:focus-visible, .clink:focus-visible, summary:focus-visible {
+  outline: 2px solid var(--accent-2);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition: none !important; }
+}
+.mail-btn { min-width: 220px; text-align: center; }
