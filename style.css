@@ -104,12 +104,15 @@ img { max-width: 100%; height: auto; display: block; }
   border-bottom: 1px solid var(--rule);
 }
 .nav-inner {
-  max-width: var(--wrap); margin: 0 auto;
+  /* wider than the 820px reading column: 8 links + 2 toggles + brand need
+     ~900px on one line (the brand used to wrap and the page overflowed) */
+  max-width: 1080px; margin: 0 auto; gap: 16px;
   padding: 0 var(--pad);
   display: flex; align-items: center; justify-content: space-between;
   min-height: var(--nav-h);
 }
 .brand {
+  white-space: nowrap; flex: none;
   font-family: var(--serif); font-weight: 600; font-size: 19px;
   color: var(--ink); letter-spacing: -0.01em;
 }
@@ -161,7 +164,8 @@ img { max-width: 100%; height: auto; display: block; }
 }
 .nav-link {
   font-family: var(--text); font-weight: 500; font-size: 14.5px;
-  color: var(--body); padding: 8px 12px; letter-spacing: 0.01em;
+  color: var(--body); padding: 8px 10px; letter-spacing: 0.01em;
+  white-space: nowrap;
 }
 .nav-link:hover { color: var(--accent); text-decoration: none; }
 .nav-link.active {
@@ -228,7 +232,7 @@ img { max-width: 100%; height: auto; display: block; }
    ============================================================ */
 .contents { border-top: 1px solid var(--rule); }
 .contents-row {
-  display: grid; grid-template-columns: auto 1fr auto; gap: 20px;
+  display: grid; grid-template-columns: auto 1fr auto; gap: 4px 20px;
   align-items: baseline; padding: 22px 8px;
   border-bottom: 1px solid var(--rule);
   transition: background-color .15s ease;
@@ -525,7 +529,10 @@ img { max-width: 100%; height: auto; display: block; }
   .pubs .doi { grid-column: 2; }
   .bench-table { display: block; overflow-x: auto; white-space: nowrap; }
   .bench-table .mnum { font-size: 12.5px; }
+}
 
+/* ---------- HAMBURGER NAV (<1024px): 8 links + toggles need ~950px in the web fonts ---------- */
+@media (max-width: 1023px) {
   /* hamburger */
   .nav-burger { display: block; }
   .nav-links {
@@ -558,13 +565,38 @@ img { max-width: 100%; height: auto; display: block; }
   * { transition: none !important; }
 }
 
-/* Blog pages share the site's four theme palettes and editorial typography. */
-.blog-prose{max-width:760px;font-family:var(--text);font-size:1.18rem;line-height:1.8;color:var(--body)}
-.blog-prose p{margin:0 0 1.45em}
-.blog-prose h2,.blog-prose h3{font-family:var(--serif);color:var(--ink);line-height:1.25;margin:2.1em 0 .75em}
-.blog-prose h2{font-size:1.7rem}.blog-prose h3{font-size:1.35rem}
-.blog-prose strong{color:var(--ink)}
-.blog-prose a,.blog-entry a{color:var(--accent)}
-.blog-entry{border-top:1px solid var(--rule);padding:1.5rem 0}
-.blog-entry h2{font-family:var(--serif);font-size:1.65rem;line-height:1.3;margin:.65em 0}
-.blog-entry p{color:var(--body)}
+/* ============================================================
+   BLOG — list rows reuse .row; posts use a reading-width prose column
+   ============================================================ */
+.post-row .rnum { min-width: 9.5em; }
+.post-row .rtitle { flex: 1 1 24ch; }
+.post-head h1 { margin-top: 14px; max-width: 24ch; }
+.post-head .meta a { color: var(--accent); }
+.blog-prose {
+  max-width: 68ch; font-family: var(--text);
+  font-size: 18.5px; line-height: 1.8; color: var(--body);
+}
+.blog-prose p { margin: 0 0 1.4em; }
+.blog-prose h2, .blog-prose h3 {
+  font-family: var(--serif); font-weight: 600; color: var(--ink);
+  line-height: 1.25; letter-spacing: -0.01em; margin: 2.2em 0 .7em;
+}
+.blog-prose h2 { font-size: 27px; }
+.blog-prose h3 { font-size: 21px; }
+.blog-prose strong { color: var(--ink); font-weight: 500; }
+.blog-prose a { text-decoration: underline; text-underline-offset: 3px; }
+/* the closing italic notes read as an aside */
+.blog-prose p:last-child, .blog-prose p:nth-last-child(2):has(> em:only-child) {
+  font-size: 15px; color: var(--muted); border-top: 1px solid var(--rule); padding-top: 1.1em;
+}
+.blog-prose p:nth-last-child(2):has(> em:only-child) { margin-top: 2.6em; }
+.blog-prose p:last-child { border-top: none; padding-top: 0; }
+.post-foot {
+  max-width: 68ch; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--rule);
+  font-family: var(--mono); font-size: 13px; letter-spacing: 0.02em;
+}
+@media (max-width: 759px) {
+  .post-row .rnum { min-width: 0; }
+  .blog-prose { font-size: 17px; line-height: 1.75; }
+  .blog-prose h2 { font-size: 23px; }
+}

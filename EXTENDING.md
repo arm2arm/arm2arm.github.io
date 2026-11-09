@@ -9,7 +9,7 @@ generated. Edit the data files, run the builder, push.
 cd /home/hermes/projects/cv-page
 python3 build.py --check          # validates: tags, local hrefs/srcs, nested <a>,
                                   # gallery/pubs keys — exits 1 on any issue
-python3 build.py                  # regenerate all 7 pages in the repo root
+python3 build.py                  # regenerate all pages (incl. blog/) + feed, sitemap, robots.txt
 ```
 
 Then deploy (see `DEPLOY.md`): copy into `existing/` and git push.
@@ -26,6 +26,8 @@ Then deploy (see `DEPLOY.md`): copy into `existing/` and git push.
 | Benchmark sections          | `content/pages/bench_sections.html` | raw HTML fragment |
 | Home prose                  | `content/pages/home_*.html`       | raw HTML (`{{PUBS}}`/`{{CITES}}`/`{{HINDEX}}`/`{{REPOS}}` auto-filled) |
 | Project deep-dives          | `content/pages/<id>_deepdive.html`| raw HTML fragment |
+| Blog posts (metadata)       | `content/blog.json`               | JSON |
+| Blog post bodies            | `content/blog/<slug>.html`        | raw HTML fragment |
 | Theme (4 palettes)          | `style.css` variable blocks       | CSS |
 
 **Escaping convention:** free text from JSON (pub titles/years/DOIs, gallery
@@ -87,6 +89,23 @@ Append to `content/pubs.json`:
 home-page "Recent Publications" (top 5) update automatically; the work count
 in the home overview and page meta update too.
 
+## Add a blog post
+
+1. Write the body as an HTML fragment in `content/blog/<slug>.html`
+   (just `<p>`, `<h2>`, `<strong>`, `<em>` … — no page chrome).
+2. Add an entry to `content/blog.json` → `posts` (order doesn't matter;
+   posts are sorted newest first):
+   ```json
+   { "slug": "<slug>", "date": "2026-12-01",
+     "title": "…", "subtitle": "…",
+     "summary": "one or two sentences for the list, link previews and the feed",
+     "tags": ["Artificial Intelligence"] }
+   ```
+3. Rebuild + deploy. This regenerates `blog/index.html`, `blog/<slug>.html`,
+   `blog/feed.xml` (Atom), `sitemap.xml`, and the Blog row on the home page.
+   Read time is computed from the word count. **Never rename a published
+   slug** — it is the post's URL.
+
 ## Add a software repo / benchmark section
 
 - Software: append `('Name', 'Lang', 'description — HTML allowed', 'https://…', 'meta or ''')`
@@ -119,6 +138,10 @@ in the home overview and page meta update too.
 - All external links: `target="_blank" rel="noopener"`.
 - Default theme: `data-theme="dark" data-accent="ocean"` on `<html>` (blue).
 - 404 page: no nav highlight + `noindex`.
+- Every other page: canonical URL, Open Graph/Twitter card tags; home carries
+  Person JSON-LD, posts carry BlogPosting JSON-LD. Pages in `blog/` link
+  back with `../` (no `<base>` tag — it breaks the skip link).
+- `--check` also verifies blog entries (slug/date/title/summary, body file).
 - `--check` verifies: tag balance (14 tags), every local `href`/`src` exists,
   no nested `<a>`, gallery figures have `src`/`alt`/`caption`/`w`/`h`, every
   publication has a title.
