@@ -557,3 +557,14 @@ img { max-width: 100%; height: auto; display: block; }
   html { scroll-behavior: auto; }
   * { transition: none !important; }
 }
+
+/* Blog pages share the site's four theme palettes and editorial typography. */
+.blog-prose{max-width:760px;font-family:var(--text);font-size:1.18rem;line-height:1.8;color:var(--body)}
+.blog-prose p{margin:0 0 1.45em}
+.blog-prose h2,.blog-prose h3{font-family:var(--serif);color:var(--ink);line-height:1.25;margin:2.1em 0 .75em}
+.blog-prose h2{font-size:1.7rem}.blog-prose h3{font-size:1.35rem}
+.blog-prose strong{color:var(--ink)}
+.blog-prose a,.blog-entry a{color:var(--accent)}
+.blog-entry{border-top:1px solid var(--rule);padding:1.5rem 0}
+.blog-entry h2{font-family:var(--serif);font-size:1.65rem;line-height:1.3;margin:.65em 0}
+.blog-entry p{color:var(--body)}
