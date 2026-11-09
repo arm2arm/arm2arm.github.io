@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Dr. Arman Khalatyan — Blog</title>
+  <link href="https://arm2arm.github.io/blog/"/>
+  <link rel="self" href="https://arm2arm.github.io/blog/feed.xml"/>
+  <id>https://arm2arm.github.io/blog/</id>
+  <updated>2026-11-08T00:00:00Z</updated>
+  <author><name>Dr. Arman Khalatyan</name></author>
+  <entry>
+    <title>Redefining Research: When AI Does the Science, Who Becomes the Scientist?</title>
+    <link href="https://arm2arm.github.io/blog/redefining-research-ai-and-scientific-expertise-07-11-2026.html"/>
+    <id>https://arm2arm.github.io/blog/redefining-research-ai-and-scientific-expertise-07-11-2026.html</id>
+    <updated>2026-11-08T00:00:00Z</updated>
+    <summary>AI can accelerate discovery. But if students delegate the work through which expertise is learned, who will recognize when machines are wrong?</summary>
+  </entry>
+</feed>
