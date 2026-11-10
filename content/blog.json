@@ -18,9 +18,10 @@
    "date": "2026-11-10",
    "title": "Eight GPUs, Two Generations: Benchmarking Open LLMs for an Astronomy Institute",
    "subtitle": "Speed, throughput, energy and answer quality on H200 and RTX PRO 6000",
-   "summary": "We measured open-weight language models on a mixed H200 / RTX PRO 6000 server: the serving engine matters more than GPU count, bandwidth sets speed, and a 27B model on two GPUs serves 64 users at about 1 J per token.",
+   "summary": "We measured open-weight language models on a mixed H200 / RTX PRO 6000 server and built AstroBench-AIP, a benchmark of 216 real astronomy computing tasks. The serving engine matters more than GPU count, and a 27B model on two GPUs serves 64 users at about 1 J per token.",
    "tags": [
     "Artificial Intelligence",
+    "Astronomy",
     "GPU Benchmarks",
     "HPC"
    ]

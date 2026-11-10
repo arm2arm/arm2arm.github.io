@@ -11,7 +11,7 @@
     <link href="https://arm2arm.github.io/blog/benchmarking-open-llms-on-a-mixed-gpu-server-10-11-2026.html"/>
     <id>https://arm2arm.github.io/blog/benchmarking-open-llms-on-a-mixed-gpu-server-10-11-2026.html</id>
     <updated>2026-11-10T00:00:00Z</updated>
-    <summary>We measured open-weight language models on a mixed H200 / RTX PRO 6000 server: the serving engine matters more than GPU count, bandwidth sets speed, and a 27B model on two GPUs serves 64 users at about 1 J per token.</summary>
+    <summary>We measured open-weight language models on a mixed H200 / RTX PRO 6000 server and built AstroBench-AIP, a benchmark of 216 real astronomy computing tasks. The serving engine matters more than GPU count, and a 27B model on two GPUs serves 64 users at about 1 J per token.</summary>
   </entry>
   <entry>
     <title>Redefining Research: When AI Does the Science, Who Becomes the Scientist?</title>

@@ -2,7 +2,7 @@
 
 <p>Many research institutes now face the same question. Should we send our prompts, code and unpublished data to a commercial API, or run open-weight models on our own hardware? The answer depends on numbers that are surprisingly hard to find: how fast a given model runs on a given GPU, how many people it can serve at once, how much electricity it burns, and whether its answers are good enough for science.</p>
 
-<p>In November 2026 we measured these numbers on a new GPU server at the Leibniz Institute for Astrophysics Potsdam (AIP). This post summarises what we found. The short version: <strong>the software stack matters more than the number of GPUs, memory bandwidth decides speed, and a well-served 27-billion-parameter model can outperform a commercial API for many simultaneous users</strong>, while a larger model gives the best answers.</p>
+<p>In November 2026 we measured these numbers on a new GPU server at the Leibniz Institute for Astrophysics Potsdam (AIP). Because general-purpose leaderboards say little about astronomy, we also built our own benchmark, <strong>AstroBench-AIP</strong>, from the tasks astronomers at the institute actually do. This post summarises what we found. The short version: <strong>the software stack matters more than the number of GPUs, memory bandwidth decides speed, and a well-served 27-billion-parameter model can outperform a commercial API for many simultaneous users</strong>, while a larger model gives the best answers.</p>
 
 <figure class="bench-fig">
   <img src="../img/gpu_server_interior.webp" width="1280" height="591" loading="lazy" alt="Interior of the GPU server with the top cover removed: GPU expansion cards with power cables, the central fan bank and the CPU heatsinks">
@@ -79,9 +79,18 @@
 
 <p>The tuned CPU power profile also mattered. A dedicated profile, with the performance governor and no automatic NUMA balancing, gave the same GPU speed as the vendor's HPC profile for 10 W instead of 75 W extra at idle.</p>
 
-<h2>Lesson 6: large models still give better answers</h2>
+<h2>Lesson 6: AstroBench-AIP, a benchmark built from astronomy work</h2>
 
-<p>Speed is worthless if the answers are wrong. To measure quality on the work our users actually do, we built <strong>AstroBench-AIP v0.2</strong>: 216 tasks in 18 families taken from everyday work at the institute. They cover Gaia-style catalogue and astrometry queries, photometry, spectra, time series, simulation output, SQL, data pipelines, Slurm job scripts and debugging. Every answer that contains code is executed in an isolated container without network access. The grader then checks the scientific result, the requested output format, code style and safety as separate scores, with no single combined number. Each model answered every task three times (648 answers per model). No answer was retried or edited.</p>
+<p>Speed is worthless if the answers are wrong. Public LLM leaderboards mostly test general knowledge, school mathematics or generic programming puzzles. They tell you little about whether a model can cross-match two catalogues without losing a Gaia source ID to floating-point rounding, propagate a proper-motion covariance into another frame, or write a Slurm array script that will not overwrite its own outputs. So we wrote our own benchmark, oriented specifically to astronomy and to the computing behind it.</p>
+
+<p><strong>AstroBench-AIP</strong> exists in two versions:</p>
+
+<ul>
+  <li><strong>v0.1 (84 tasks)</strong> covers astrophysical calculations with tolerances (distances, magnitudes, extinction, Kepler orbits, cosmology), survey knowledge (Gaia columns and systematics, ADQL, HEALPix), and short astronomy code checked by hidden tests. It also includes reading synthetic plots (light-curve periods, spectral redshifts, colour–magnitude diagrams), multi-step tool use, and unanswerable questions about non-existent objects or papers. These test whether a model admits &ldquo;unknown&rdquo; or invents an answer.</li>
+  <li><strong>v0.2 (216 tasks in 18 families)</strong> is modelled on everyday work at AIP: astrometry, catalogues and cross-matching, coordinate frames, photometry, spectra, time series, simulation diagnostics, statistical inference, astronomical and relational SQL, file formats, data pipelines, visualisation, Slurm resource requests and job safety, HPC failure recovery, tool policies, and repairing buggy code.</li>
+</ul>
+
+<p>Every v0.2 task asks for working code or a precise structured answer. All input data are synthetic test fixtures, so no real survey data or unpublished results are involved. Hidden test cases cannot be memorised from the prompt. Each answer is executed in an isolated container without network access, and the grader keeps four questions separate. Is the scientific result right? Does the output follow the requested format? Is the code readable? Is it safe, for example no deleting files outside the work area and no runaway cluster jobs? There is deliberately no single combined score. Each model answered every task three times (648 answers per model), and no answer was retried or edited.</p>
 
 <figure class="bench-fig">
   <a href="../img/gpu_bench_astrobench_v02.webp"><img src="../img/gpu_bench_astrobench_v02.webp" width="1600" height="812" loading="lazy" alt="Grouped bar chart of AstroBench-AIP v0.2 pass rates on five axes for four models. On science, DeepSeek-V4.1-Flash 95.8 percent, Qwen3.8-27B 89.9, MiniMax-M3.1-Flash 89.5, GLM-5.3-Flash 86.1."></a>
