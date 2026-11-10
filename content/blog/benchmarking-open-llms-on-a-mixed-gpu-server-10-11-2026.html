@@ -1,0 +1,124 @@
+<p><em>What eight GPUs of two different generations can and cannot do for an institute that wants to run its own language models: measured speed, multi-user throughput, energy per token, and answer quality on real astronomy work.</em></p>
+
+<p>Many research institutes now face the same question. Should we send our prompts, code and unpublished data to a commercial API, or run open-weight models on our own hardware? The answer depends on numbers that are surprisingly hard to find: how fast a given model runs on a given GPU, how many people it can serve at once, how much electricity it burns, and whether its answers are good enough for science.</p>
+
+<p>In November 2026 we measured these numbers on a new GPU server at the Leibniz Institute for Astrophysics Potsdam (AIP). This post summarises what we found. The short version: <strong>the software stack matters more than the number of GPUs, memory bandwidth decides speed, and a well-served 27-billion-parameter model can outperform a commercial API for many simultaneous users</strong>, while a larger model gives the best answers.</p>
+
+<figure class="bench-fig">
+  <img src="../img/gpu_server_interior.webp" width="1280" height="591" loading="lazy" alt="Interior of the GPU server with the top cover removed: GPU expansion cards with power cables, the central fan bank and the CPU heatsinks">
+  <figcaption>The benchmark server with the cover removed. Photograph: Arman Khalatyan.</figcaption>
+</figure>
+
+<h2>The machine</h2>
+
+<p>The server is a Gigabyte G494-SB4 with two 32-core Intel Xeon 6737P processors, 1 TB of DDR5 memory and eight GPUs of two kinds:</p>
+
+<table class="bench-table">
+  <caption>GPUs under test</caption>
+  <tr><th>GPU</th><th>Count</th><th>Memory</th><th>Bandwidth</th><th>Link</th></tr>
+  <tr><td>NVIDIA RTX PRO 6000 Blackwell Server Edition</td><td class="mnum">6</td><td class="mnum">96 GB GDDR7</td><td class="mnum">~1.8 TB/s</td><td>PCIe Gen5, in pairs on a switch</td></tr>
+  <tr><td>NVIDIA H200 NVL</td><td class="mnum">2</td><td class="mnum">141 GB HBM3e</td><td class="mnum">~4.8 TB/s</td><td>NVLink bridge between the two</td></tr>
+</table>
+
+<p>Together that is 858 GB of GPU memory, enough to hold even trillion-parameter models at reduced precision. The mix of two GPU generations is unusual. It turned out to be the most instructive part of the whole exercise.</p>
+
+<p>We tested current open-weight models across the size range: the dense <strong>Qwen3.8-27B</strong>, and the large mixture-of-experts (MoE) models <strong>MiniMax-M3.1-Flash</strong>, <strong>DeepSeek-V4.1-Flash</strong>, <strong>GLM-5.3</strong>, <strong>GLM-5.3-Flash</strong> and <strong>Mistral Large 4</strong>. We served them with three engines: <strong>llama.cpp</strong> (the engine behind many desktop tools), <strong>vLLM</strong> and <strong>SGLang</strong>. One rule applied throughout. Models under 80 billion parameters ran at full BF16 precision, because small models quantised to 4 bits hallucinate noticeably more. Large models ran at the precision their developers ship (FP8 or FP4) or, in llama.cpp, at the largest quantisation that fits.</p>
+
+<h2>Lesson 1: memory bandwidth decides single-user speed</h2>
+
+<p>Generating text one token at a time is limited by how fast the GPU can read the model weights from memory, not by how fast it can compute. The H200 reads memory about 2.7 times faster than the RTX PRO 6000. For the dense 27B model this showed up almost one to one: <strong>per GPU, the H200 was 2 to 2.3 times faster</strong>.</p>
+
+<figure class="bench-fig">
+  <a href="../img/gpu_bench_overview.webp"><img src="../img/gpu_bench_overview.webp" width="1600" height="605" loading="lazy" alt="Two bar charts. Left: best single-user speed per model, Qwen3.8-27B on two H200 fastest at 274 tokens per second. Right: throughput at 64 concurrent requests, Qwen3.8-27B on two H200 highest at 2960 tokens per second."></a>
+  <figcaption>Left: best single-user speed per model and engine (600-token coding answer). Right: total output at 64 simultaneous requests. Orange = vLLM, blue = llama.cpp.</figcaption>
+</figure>
+
+<p>The fastest single-user result was Qwen3.8-27B in vLLM on the NVLinked H200 pair: <strong>274 tokens per second</strong>, about a page of text in two to three seconds. The fastest large model for one user was DeepSeek-V4.1-Flash in SGLang on four RTX cards, at <strong>304 tokens per second</strong>.</p>
+
+<h2>Lesson 2: more GPUs do not help, unless the engine can use them</h2>
+
+<p>The most counter-intuitive result came from llama.cpp. For a large MoE model it can only split the model <em>by layers</em> across GPUs, so a token passes through the cards one after another. Adding GPUs adds memory, not speed. DeepSeek-V4.1-Flash generated 88 tokens per second on four RTX cards and exactly the same on six. What did matter was the <em>type</em> of GPU: moving part of the model to the H200s raised it to 94.</p>
+
+<p>vLLM and SGLang can split each layer across GPUs (tensor parallelism). On the two H200s joined by NVLink this made a single user 1.6 to 1.7 times faster than on one H200.</p>
+
+<p>The difference is much larger under load. llama.cpp serves parallel requests, but it does not batch them efficiently. With eight users, DeepSeek in llama.cpp reached <strong>99 tokens per second in total</strong>, shared among all of them. vLLM batches requests continuously, and the totals climbed into the thousands:</p>
+
+<figure class="bench-fig">
+  <a href="../img/gpu_bench_qwen27_users.webp"><img src="../img/gpu_bench_qwen27_users.webp" width="1600" height="475" loading="lazy" alt="Three line charts for Qwen3.8-27B in vLLM versus number of concurrent requests: total throughput rising to about 3000 tokens per second on two H200, per-user speed falling, and time to first token staying below one second except for a single RTX card at 64 users."></a>
+  <figcaption>Qwen3.8-27B BF16 in vLLM with 1–64 simultaneous requests (2048-token prompts, 512-token answers): total throughput, speed per user, and median time to first token.</figcaption>
+</figure>
+
+<p>Qwen3.8-27B on the H200 pair delivered <strong>2,960 tokens per second at 64 simultaneous users</strong>, about 59 tokens per second each, with the first token after 0.3 seconds. A single RTX card holding the same model handled about 30 users. Beyond that, latency exploded to more than ten seconds.</p>
+
+<h2>Lesson 3: speculative decoding is the biggest single lever</h2>
+
+<p>Speculative decoding lets a small draft model, or a built-in prediction head, guess several tokens ahead. The large model then checks them all in one step. Accepted guesses are free speed. Across models and engines this gave <strong>40 to 130 percent</strong> more speed for a single user, more than any change of hardware or settings. Qwen's built-in multi-token-prediction head was accepted 79–91 % of the time. Longer drafts paid off only where acceptance stayed high.</p>
+
+<h2>Lesson 4: new hardware needs new software</h2>
+
+<p>The RTX PRO 6000 is a very new architecture (compute capability sm_120), and the serving software has not fully caught up. Several official model releases simply did not start:</p>
+
+<ul>
+  <li><strong>DeepSeek-V4.1-Flash in vLLM</strong> loaded all 511 GB of weights and then failed while setting up its cache. We traced it to two GPU kernels that need different memory page sizes on this architecture, which vLLM's allocator cannot provide at the same time. A community SGLang build for sm_120 ran the same checkpoint without problems, and became the fastest large-model setup in the test.</li>
+  <li><strong>Mistral Large 4 in its official NVFP4 format</strong> failed in three different multi-GPU layouts. In one, a Hopper kernel on the H200s did not support the Blackwell-specific number format. Running it this way needs eight identical Blackwell GPUs. It stayed on llama.cpp at 41 tokens per second.</li>
+  <li><strong>GLM-5.3-Flash</strong> ran in vLLM at FP8, but its draft head no longer fitted next to 347 GB of weights on four cards.</li>
+</ul>
+
+<p>For anyone buying hardware, this is a practical point. On paper, a mixed server is flexible. In practice, the fastest engines assume identical GPUs, and the newest architectures depend on community builds for some models.</p>
+
+<h2>Lesson 5: watts per token</h2>
+
+<p>We measured whole-server power with the baseboard management controller while each model ran. The empty server draws about <strong>900 W</strong>. Every GPU that holds model weights adds 60–90 W even when nobody is using it. With eight loaded GPUs, the idle server drew about 1,380 W.</p>
+
+<figure class="bench-fig">
+  <a href="../img/gpu_bench_energy.webp"><img src="../img/gpu_bench_energy.webp" width="1600" height="623" loading="lazy" alt="Left: energy per generated token for one user, from 5.2 joules for DeepSeek-V4.1-Flash in SGLang to 44.5 joules for GLM-5.3-Flash BF16 in llama.cpp on eight GPUs. Right: whole-server power for each model when idle, with one user and with 64 users."></a>
+  <figcaption>Left: whole-server energy per generated token for a single user. Right: server power with the model loaded but idle, with one user, and with 64 users (dotted line: empty server, 900 W).</figcaption>
+</figure>
+
+<p>For one user, the most efficient setups were DeepSeek-V4.1-Flash in SGLang (<strong>5.2 J per token</strong>) and Qwen3.8-27B in vLLM (6.0 J). The largest models in llama.cpp on six or eight GPUs cost 28–45 J per token. Under load the picture improves dramatically, because the fixed power is shared among many users. Qwen3.8-27B serving 64 users needed about <strong>1 joule per token</strong>. By that measure, a busy small model was about forty times more efficient than a very large model serving a single user.</p>
+
+<p>The tuned CPU power profile also mattered. A dedicated profile, with the performance governor and no automatic NUMA balancing, gave the same GPU speed as the vendor's HPC profile for 10 W instead of 75 W extra at idle.</p>
+
+<h2>Lesson 6: large models still give better answers</h2>
+
+<p>Speed is worthless if the answers are wrong. To measure quality on the work our users actually do, we built <strong>AstroBench-AIP v0.2</strong>: 216 tasks in 18 families taken from everyday work at the institute. They cover Gaia-style catalogue and astrometry queries, photometry, spectra, time series, simulation output, SQL, data pipelines, Slurm job scripts and debugging. Every answer that contains code is executed in an isolated container without network access. The grader then checks the scientific result, the requested output format, code style and safety as separate scores, with no single combined number. Each model answered every task three times (648 answers per model). No answer was retried or edited.</p>
+
+<figure class="bench-fig">
+  <a href="../img/gpu_bench_astrobench_v02.webp"><img src="../img/gpu_bench_astrobench_v02.webp" width="1600" height="812" loading="lazy" alt="Grouped bar chart of AstroBench-AIP v0.2 pass rates on five axes for four models. On science, DeepSeek-V4.1-Flash 95.8 percent, Qwen3.8-27B 89.9, MiniMax-M3.1-Flash 89.5, GLM-5.3-Flash 86.1."></a>
+  <figcaption>AstroBench-AIP v0.2, 216 tasks × 3 answers per model. Five independent axes; science is checked on 612 answers per model.</figcaption>
+</figure>
+
+<table class="bench-table">
+  <caption>AstroBench-AIP v0.2 pass rates (science: 612 checked answers per model; output contract: 648)</caption>
+  <tr><th>Model</th><th>Science</th><th>Output contract</th></tr>
+  <tr><td>DeepSeek-V4.1-Flash</td><td class="mnum win">95.8 %</td><td class="mnum">96.3 %</td></tr>
+  <tr><td>Qwen3.8-27B (BF16)</td><td class="mnum">89.9 %</td><td class="mnum">93.2 %</td></tr>
+  <tr><td>MiniMax-M3.1-Flash</td><td class="mnum">89.5 %</td><td class="mnum">94.1 %</td></tr>
+  <tr><td>GLM-5.3-Flash</td><td class="mnum">86.1 %</td><td class="mnum">92.7 %</td></tr>
+</table>
+
+<p>We compared the models task by task on the same tasks. DeepSeek-V4.1-Flash was ahead of the other three by 6–10 percentage points, a margin the statistics support. Qwen and MiniMax could not be told apart. A notable share of the remaining failures were not wrong science at all. The model spent its whole output budget thinking and never wrote a final answer. Two small defects in our own grader also wrongly failed five answers in total. Correcting them does not change the ordering. We report the scores unadjusted and document both defects.</p>
+
+<p>A 27-billion-parameter model that fits on two GPUs scored within a few points of the much larger MoE models. For an institute, that is good news.</p>
+
+<h2>Lesson 7: local versus a commercial API</h2>
+
+<p>We ran the same speed tests against a commercial OpenAI-compatible API offering some of the same models. For a single user the API was faster: DeepSeek-V4.1-Flash reached 409 tokens per second there, against 304 on our server. Under load the picture reversed. The API account flattened out at about 1,500 tokens per second from 16 users onward, with the first token arriving after up to six seconds, and it refused requests above 32 at a time. Qwen3.8-27B on our two H200s delivered 2,194 tokens per second at 32 users with 0.3 seconds to the first token. The comparison has limits: provider hardware and load are unknown, and the API did not allow thinking to be switched off. Still, it shows that the bottleneck of a hosted service is often the account, not the hardware, and that prompts never have to leave the institute.</p>
+
+<h2>What we will run</h2>
+
+<p>The measurements translate into a straightforward plan for a service of 200 or more users:</p>
+
+<ul>
+  <li><strong>Serve through vLLM or SGLang, not desktop engines.</strong> Continuous batching is what makes a shared service possible.</li>
+  <li><strong>Qwen3.8-27B at full BF16 on the NVLinked H200 pair</strong> as the everyday default: fast for one user, about 3,000 tokens per second for 64, about 1 J per token.</li>
+  <li><strong>One large MoE model on four RTX cards</strong> for the hardest questions. DeepSeek-V4.1-Flash gives the best answers and the best single-user efficiency. Its multi-user limit in the current SGLang build still needs a retest.</li>
+  <li><strong>The remaining RTX pair</strong> for a second Qwen replica, embeddings or tools.</li>
+  <li><strong>A gateway in front</strong>, with single sign-on, per-user keys, quotas and usage accounting, routing each request to the least-loaded replica rather than in strict rotation, because the copies run at very different speeds.</li>
+</ul>
+
+<p>The biggest surprise was not any single number. It was how much the outcome depended on details that are easy to overlook: which engine, which GPU type, whether a draft model is used, and which build of the software supports a brand-new GPU architecture. Benchmarks on paper rarely capture these details. Measuring them took a few days, and it changed our plans.</p>
+
+<p><em>All measurements were made on one server in November 2026 with llama.cpp b12176, vLLM 0.33 and an SGLang community build. Single-user tests used one fixed 600-token coding prompt with thinking off. Multi-user tests used 2,048-token random prompts and 512-token answers. Same-configuration runs on different days varied by up to ±15 % at high load. The results describe these checkpoints and settings on this hardware, not a general ranking of models.</em></p>
+
+<p><em>Preparation note: The benchmarks were designed and run with the help of an AI agent (Hermes, using Claude), which also drafted this text from the full internal report. All figures and numbers come from the measured data.</em></p>

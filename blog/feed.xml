@@ -4,8 +4,15 @@
   <link href="https://arm2arm.github.io/blog/"/>
   <link rel="self" href="https://arm2arm.github.io/blog/feed.xml"/>
   <id>https://arm2arm.github.io/blog/</id>
-  <updated>2026-11-08T00:00:00Z</updated>
+  <updated>2026-11-10T00:00:00Z</updated>
   <author><name>Dr. Arman Khalatyan</name></author>
+  <entry>
+    <title>Eight GPUs, Two Generations: Benchmarking Open LLMs for an Astronomy Institute</title>
+    <link href="https://arm2arm.github.io/blog/benchmarking-open-llms-on-a-mixed-gpu-server-10-11-2026.html"/>
+    <id>https://arm2arm.github.io/blog/benchmarking-open-llms-on-a-mixed-gpu-server-10-11-2026.html</id>
+    <updated>2026-11-10T00:00:00Z</updated>
+    <summary>We measured open-weight language models on a mixed H200 / RTX PRO 6000 server: the serving engine matters more than GPU count, bandwidth sets speed, and a 27B model on two GPUs serves 64 users at about 1 J per token.</summary>
+  </entry>
   <entry>
     <title>Redefining Research: When AI Does the Science, Who Becomes the Scientist?</title>
     <link href="https://arm2arm.github.io/blog/redefining-research-ai-and-scientific-expertise-07-11-2026.html"/>
